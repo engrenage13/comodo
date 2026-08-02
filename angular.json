@@ -52,6 +52,7 @@
               }
             ],
             "styles": [
+              "node_modules/@foblex/flow/styles/default.scss",
               "src/styles.scss"
             ]
           },
@@ -69,12 +70,14 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "styles": ["node_modules/@foblex/flow/styles/default.scss"]
             },
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "styles": ["node_modules/@foblex/flow/styles/default.scss"]
             }
           },
           "defaultConfiguration": "production"

@@ -1,0 +1,57 @@
+<f-flow fDraggable>
+  <f-selection-area />
+  <f-canvas fZoom>
+    <f-connection 
+      fSourceId="source-1" 
+      fTargetId="target-1" 
+      fBehavior="floating" 
+      fType="adaptive-curve"
+    ></f-connection>
+    <f-connection fSourceId="source-1" fTargetId="target-2"></f-connection>
+
+    <div
+      fNode
+      fDragHandle
+      [fNodePosition]="{ x: 32, y: 32 }"
+    >
+      Node 1
+      <div
+        fConnector
+        fConnectorId="source-1"
+        fConnectorType="source"
+        fConnectorConnectableSide="right"
+      ></div>
+    </div>
+
+    <div
+      fNode
+      fDragHandle
+      [fNodePosition]="{ x: 240, y: 32 }"
+    >
+      Node 2
+      <div
+        fConnector
+        fConnectorId="target-1"
+        fConnectorType="target"
+        fConnectorConnectableSide="left"
+      ></div>
+    </div>
+
+    <div
+      fNode
+      fDragHandle
+      [fNodePosition]="{ x: 32, y: 186 }"
+    >
+      Node 3
+      <div
+        fConnector
+        fConnectorId="target-2"
+        fConnectorType="target"
+      ></div>
+    </div>
+  </f-canvas>
+
+  <div>
+    <f-minimap [fMinSize]="2000" />
+  </div>
+</f-flow>
