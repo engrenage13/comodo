@@ -52,8 +52,8 @@
               }
             ],
             "styles": [
-              "node_modules/@foblex/flow/styles/default.scss",
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/@foblex/flow/styles/default.scss"
             ]
           },
           "configurations": {

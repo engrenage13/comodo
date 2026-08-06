@@ -1,5 +1,21 @@
 @use '@foblex/flow/styles/default';
 
-body {
-  margin: 0;
+.row, .column {
+  display: flex;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.gap {
+  gap: 2rem;
+
+  &-s {
+    gap: 1rem;
+  }
+
+  &-xs {
+    gap: .5rem;
+  }
 }

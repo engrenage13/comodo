@@ -55,3 +55,14 @@
     <f-minimap [fMinSize]="2000" />
   </div>
 </f-flow>
+
+<app-toolbar />
+
+@if(isSidePanelOpen()) {
+  <app-side-panel
+    title="Modifier la table"
+    (closePanel)="isSidePanelOpen.set(false)"
+  >
+    
+  </app-side-panel>
+}

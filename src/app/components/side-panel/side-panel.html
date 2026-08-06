@@ -1,0 +1,30 @@
+<div class="panel-fondation">
+  @if (isShown()) {
+    <div class="shadow" (click)="close()" (keydown.enter)="close()" animate.leave="animation-transparent"></div>
+
+    <dialog
+      class="panel {{size()}} {{color()}} {{alignment()}}"
+      [open]="isShown()"
+      aria-modal="true"
+      aria-labelledby="popup-title"
+      animate.enter="animation-open"
+      animate.leave="animation-close"
+    >
+      <div class="panel-inner">
+        <!-- Header -->
+        <div class="panel-header">
+          <h2 class="panel-header-title">{{title()}}</h2>
+
+          <button class="panel-header-close" (click)="close()" title="Fermer la fenêtre">
+            <i class="bi bi-x-lg alone"></i>
+          </button>
+        </div>
+
+        <!-- Content -->
+        <div class="panel-content">
+          <ng-content />
+        </div>
+      </div>
+    </dialog>
+  }
+</div>

@@ -1,0 +1,34 @@
+.toolbar {
+  position: fixed;
+  top: .5rem;
+  left: 50vw;
+  padding: .2rem;
+  border: 1px solid black;
+  box-shadow: 0 1px 2px black;
+  border-radius: .5rem;
+  background: white;
+}
+
+.icobutton {
+  padding: 0;
+  border: none;
+  background: transparent;
+  border-radius: .5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  transition: all .2s ease-in;
+
+  img {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  &:hover {
+    background: #6565ce33;
+  }
+
+  &.selected {
+    background: #6565ce;
+    color: white;
+  }
+}
