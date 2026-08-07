@@ -1,11 +1,23 @@
 @use '@foblex/flow/styles/default';
 
+body {
+  margin: 0;
+}
+
 .row, .column {
   display: flex;
 }
 
 .column {
   flex-direction: column;
+}
+
+.row, .center {
+  align-items: center;
+}
+
+.center {
+  justify-content: center;
 }
 
 .gap {

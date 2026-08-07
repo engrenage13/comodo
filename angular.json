@@ -70,14 +70,12 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all",
-              "styles": ["node_modules/@foblex/flow/styles/default.scss"]
+              "outputHashing": "all"
             },
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true,
-              "styles": ["node_modules/@foblex/flow/styles/default.scss"]
+              "sourceMap": true
             }
           },
           "defaultConfiguration": "production"

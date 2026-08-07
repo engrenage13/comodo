@@ -1,22 +1,27 @@
+@use '../../../styles.scss';
+
 .toolbar {
   position: fixed;
   top: .5rem;
   left: 50vw;
   padding: .2rem;
-  border: 1px solid black;
-  box-shadow: 0 1px 2px black;
-  border-radius: .5rem;
+  border: 1px solid #3d3d3e;
+  box-shadow: 0 1px 2px #000000;
+  border-radius: .7rem;
   background: white;
 }
 
 .icobutton {
+  @extend .row, .center;
+
   padding: 0;
   border: none;
-  background: transparent;
+  background: #e7e7eb;
   border-radius: .5rem;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.3rem;
+  height: 2.3rem;
   transition: all .2s ease-in;
+  cursor: pointer;
 
   img {
     width: 2rem;
@@ -24,11 +29,15 @@
   }
 
   &:hover {
-    background: #6565ce33;
+    background: #445cd64f;
   }
 
   &.selected {
-    background: #6565ce;
+    background: #3b5dcf;
     color: white;
+
+    &:hover {
+      background: #3b80cf;
+    }
   }
 }
