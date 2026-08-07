@@ -1,8 +1,20 @@
-<nav class="toolbar row gap-xs">
-  <button (click)="setCursorMode(0)" class="icobutton" [class.selected]="cursorMode() == 0">
-    <img src="cursor.svg" alt="Sélection" width="32" height="32">
-  </button>
-  <button (click)="setCursorMode(1)" class="icobutton" [class.selected]="cursorMode() == 1">
-    <img src="table.svg" alt="Ajouter une table" width="32" height="32">
-  </button>
-</nav>
+<div class="toolbar-foundation row center">
+  <nav class="toolbar row">
+    <button 
+      (click)="setCursorMode(0)" 
+      class="icobutton" 
+      [class.selected]="cursorMode() == 0"
+      title="Sélection"
+    >
+      <span class="material-symbols-rounded">arrow_selector_tool</span>
+    </button>
+    <button 
+      (click)="setCursorMode(1)" 
+      class="icobutton" 
+      [class.selected]="cursorMode() == 1"
+      title="Ajouter une table"
+    >
+      <span class="material-symbols-rounded">table</span>
+    </button>
+  </nav>
+</div>
