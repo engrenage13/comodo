@@ -10,8 +10,13 @@
     <f-connection fSourceId="source-1" fTargetId="target-2"></f-connection>-->
 
     <ng-container ngProjectAs="[fNodes]">
-      @for(table of tables(); track $index) {
-        <app-table [content]="table" [id]="$index" [disableDragging]="!isSelector()" />
+      @for(table of tables(); track table.id) {
+        <app-table 
+          [content]="table" 
+          [id]="table.id" 
+          [disableDragging]="!isSelector()" 
+          (edit)="editedTable.set(table)"
+        />
       }
     </ng-container>
   </f-canvas>
@@ -27,11 +32,6 @@
 
 <app-toolbar />
 
-@if(isSidePanelOpen()) {
-  <app-side-panel
-    title="Modifier la table"
-    (closePanel)="isSidePanelOpen.set(false)"
-  >
-    
-  </app-side-panel>
+@if(editedTable()) {
+  <app-table-settings [tableDatas]="editedTable()!" (closePanel)="editedTable.set(undefined)" />
 }

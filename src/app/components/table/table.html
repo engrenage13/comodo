@@ -1,11 +1,18 @@
 <div
   fNode
-  fDragHandle
   [fNodeId]="id()"
   [fNodePosition]="content().coords"
   [fNodeDraggingDisabled]="disableDragging()"
 >
-  {{content().title}}
+  <nav class="row right options-row">
+    <button class="ico-button classic" title="Modifier la table" (click)="edit.emit()">
+      <span class="material-symbols-rounded">table_edit</span>
+    </button>
+    <button class="ico-button" fDragHandle title="Déplacer la table">
+      <span class="material-symbols-rounded">drag_pan</span>
+    </button>
+  </nav>
+  <div class="table-title">{{content().title}}</div>
   <!--<div
     fConnector
     fConnectorId="source-1"

@@ -33,11 +33,11 @@
   }
 
   &.selected {
-    background: #3b5dcf;
+    background: var(--color-main);
     color: white;
 
     &:hover {
-      background: #3b6ccf;
+      background: var(--color-main-active);
     }
   }
 }

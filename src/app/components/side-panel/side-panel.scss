@@ -26,33 +26,16 @@
 }
 
 .shadow {
-  background: var(--utc-color-overlay);
+  background: #000c;
   transition: .3s;
 }
 
 .panel {
-  --header-background: var(--utc-color-main);
-  --header-color: var(--utc-color-white);
-  --x-hover: var(--utc-color-accent);
+  --header-background: var(--color-main);
+  --header-color: white;
+  --x-hover: #efce12;
   --width: 50vw;
 
-  &.info {
-    --header-background: var(--utc-color-info);
-  }
-  &.success {
-    --header-background: var(--utc-color-success);
-  }
-  &.accent {
-    --header-background: var(--utc-color-accent);
-    --header-color: var(--utc-color-text);
-    --x-hover: var(--utc-color-important);
-  }
-  &.important {
-    --header-background: var(--utc-color-important);
-  }
-  &.critical {
-    --header-background: var(--utc-color-critical);
-  }
   &.xxs {
     --width: 20vw;
   }
@@ -91,7 +74,7 @@
   }
 
   &-header {
-    padding: 1rem 2rem 1rem 1.5rem;
+    padding: .5rem 1rem;
     background: var(--header-background);
     color: var(--header-color);
     align-items: center;
@@ -99,20 +82,25 @@
 
     &-title {
       margin: 0;
+      font-size: 1.5rem;
     }
 
     &-close {
-      width: 3rem;
-      height: 3rem;
+      width: 2rem;
+      height: 2rem;
       display: flex;
       justify-content: center;
       align-items: center;
       background: none;
       border: none;
-      font-size: 2.8rem;
       cursor: pointer;
       color: var(--header-color);
       transition: all .2s ease-in-out;
+      padding: 0;
+
+      .material-symbols-rounded {
+        font-size: 2rem;
+      }
 
       &:hover, &:focus {
         color: var(--x-hover);
@@ -187,14 +175,6 @@ $duration: 300ms;
 
     &-inner {
       width: 100vw;
-    }
-
-    &-header {
-      padding-right: 1.5rem;
-
-      &-title {
-        font-size: 1.6rem;
-      }
     }
   }
 }

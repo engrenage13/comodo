@@ -14,11 +14,6 @@ export class SidePanel {
    */
   title = input<string>("Titre");
   /**
-   * Couleur d'accentuation de la fenêtre.
-   * @default normal
-   */
-  color = input<TSidePanelColor>('normal');
-  /**
    * Taille de la fenêtre.
    * @default m
    */
@@ -58,6 +53,5 @@ export class SidePanel {
   }
 }
 
-export type TSidePanelColor = 'normal'|'info'|'success'|'accent'|'important'|'critical';
 export type TSidePanelSize = 'xxl'|'xl'|'l'|'m'|'s'|'xs'|'xxs';
 export type TSidePanelAlignment = 'left'|'right';

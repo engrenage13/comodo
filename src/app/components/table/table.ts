@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { iTable } from '../../types/interfaces';
 import { FFlowModule } from '@foblex/flow';
 
@@ -9,7 +9,11 @@ import { FFlowModule } from '@foblex/flow';
   styleUrl: './table.scss',
 })
 export class Table {
+  // Inputs
   content = input.required<iTable>();
   id = input.required<number>();
   disableDragging = input<boolean>(false);
+
+  // Outputs
+  edit = output<void>();
 }

@@ -1,0 +1,9 @@
+<app-side-panel
+  [title]="'Modifier la table'"
+  size="s"
+  (closePanel)="closePanel.emit()"
+>
+  <button class="button critical row gap-xs center" (click)="deleteTable()">
+    <span class="material-symbols-rounded">delete</span> Supprimer la table
+  </button>
+</app-side-panel>

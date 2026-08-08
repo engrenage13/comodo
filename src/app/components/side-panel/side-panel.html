@@ -3,7 +3,7 @@
     <div class="shadow" (click)="close()" (keydown.enter)="close()" animate.leave="animation-transparent"></div>
 
     <dialog
-      class="panel {{size()}} {{color()}} {{alignment()}}"
+      class="panel {{size()}} {{alignment()}}"
       [open]="isShown()"
       aria-modal="true"
       aria-labelledby="popup-title"
@@ -16,7 +16,7 @@
           <h2 class="panel-header-title">{{title()}}</h2>
 
           <button class="panel-header-close" (click)="close()" title="Fermer la fenêtre">
-            <i class="bi bi-x-lg alone"></i>
+            <span class="material-symbols-rounded">close</span>
           </button>
         </div>
 

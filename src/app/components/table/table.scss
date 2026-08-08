@@ -1,12 +1,44 @@
+@use "../../../styles.scss";
+
 .f-node {
-  padding: 24px;
-  color: rgba(60, 60, 67);
-  text-align: center;
+  @extend .column;
+
+  padding: .2rem;
   background: #ffffff;
   border-radius: 6px;
-  border: 1px solid rgba(60, 60, 67, 0.28);
+  border: 1px solid #3c3c4347;
 
   &.f-selected {
     border-color: var(--connection-color, #3451b2);
   }
+}
+
+.options-row {
+  gap: .4rem;
+}
+
+.ico-button {
+  background: none;
+  border: none;
+  padding: 0;
+  transition: all .2s ease-in-out;
+  color: #3c3c43;
+  
+  .material-symbols-rounded {
+    font-size: 1.3rem;
+  }
+
+  &.classic {
+    cursor: pointer;
+  }
+
+  &:hover, &:focus {
+    color: var(--color-main);
+  }
+}
+
+.table-title {
+  text-align: left;
+  margin: 0 .3rem;
+  font-weight: bold;
 }

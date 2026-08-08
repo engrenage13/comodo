@@ -22,6 +22,7 @@ export interface iCoord {
 }
 
 export interface iTable {
+  id: number;
   title: string;
   rows: iRow[];
   coords: iCoord;

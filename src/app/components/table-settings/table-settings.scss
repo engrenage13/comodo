@@ -1,0 +1,22 @@
+.button {
+  background: var(--color-main);
+  border: none;
+  border-radius: .5rem;
+  color: var(--color-white);
+  padding: .3rem .5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+
+  &:hover, &:focus {
+    background: var(--color-main-active);
+  }
+
+  &.critical {
+    background: #bd1616;
+
+    &:hover, &:focus {
+      background: #d61919;
+    }
+  }
+}
