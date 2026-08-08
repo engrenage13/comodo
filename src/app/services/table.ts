@@ -4,8 +4,8 @@ import { iCoord, iTable } from '../types/interfaces';
 @Service()
 export class Table {
   tables = signal<iTable[]>([
-    {title: "Table 1", rows: [], coords: {x: 32, y: 32}},
-    {title: "Table 2", rows: [], coords: {x: 240, y: 32}}
+    {title: "Table 1", rows: [], coords: {x: 32, y: 64}},
+    {title: "Table 2", rows: [], coords: {x: 200, y: 64}}
   ]);
 
   createTable(coords: iCoord): void {

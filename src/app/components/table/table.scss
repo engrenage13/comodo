@@ -1,0 +1,12 @@
+.f-node {
+  padding: 24px;
+  color: rgba(60, 60, 67);
+  text-align: center;
+  background: #ffffff;
+  border-radius: 6px;
+  border: 1px solid rgba(60, 60, 67, 0.28);
+
+  &.f-selected {
+    border-color: var(--connection-color, #3451b2);
+  }
+}
