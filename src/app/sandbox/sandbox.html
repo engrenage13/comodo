@@ -14,7 +14,7 @@
         <app-table 
           [content]="table" 
           [id]="table.id" 
-          [disableDragging]="!isSelector()" 
+          [disableOptions]="!isSelector()" 
           (edit)="editedTable.set(table)"
         />
       }

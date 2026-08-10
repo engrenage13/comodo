@@ -5,7 +5,7 @@ export enum eDataType {
   Blob = "blob",
 }
 
-export interface iRow {
+export interface iColumn {
   name: string;
   type: eDataType;
   maxlength?: number;
@@ -24,6 +24,6 @@ export interface iCoord {
 export interface iTable {
   id: number;
   title: string;
-  rows: iRow[];
+  columns: iColumn[];
   coords: iCoord;
 }

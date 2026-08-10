@@ -3,6 +3,19 @@
   size="s"
   (closePanel)="closePanel.emit()"
 >
+  <form class="column gap-s" onsubmit="return false">
+    <div class="column gap-xs">
+      <label for="title" class="label">Nom de la table</label>
+      <input id="title" class="input" [formField]="tableForm.title" />
+    </div>
+
+    <button class="button row gap-xs center" (click)="saveTableModifications()">
+      <span class="material-symbols-rounded">save</span> Enregistrer les modifications
+    </button>
+  </form>
+
+  <hr class="separator" />
+
   <button class="button critical row gap-xs center" (click)="deleteTable()">
     <span class="material-symbols-rounded">delete</span> Supprimer la table
   </button>

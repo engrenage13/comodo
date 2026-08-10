@@ -12,7 +12,7 @@ export class Table {
   // Inputs
   content = input.required<iTable>();
   id = input.required<number>();
-  disableDragging = input<boolean>(false);
+  disableOptions = input<boolean>(false);
 
   // Outputs
   edit = output<void>();

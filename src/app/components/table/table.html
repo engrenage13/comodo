@@ -2,13 +2,18 @@
   fNode
   [fNodeId]="id()"
   [fNodePosition]="content().coords"
-  [fNodeDraggingDisabled]="disableDragging()"
+  [fNodeDraggingDisabled]="disableOptions()"
 >
   <nav class="row right options-row">
-    <button class="ico-button classic" title="Modifier la table" (click)="edit.emit()">
+    <button 
+    class="ico-button classic" 
+    title="Modifier la table" 
+    (click)="edit.emit()" 
+    [disabled]="disableOptions()"
+    >
       <span class="material-symbols-rounded">table_edit</span>
     </button>
-    <button class="ico-button" fDragHandle title="Déplacer la table">
+    <button class="ico-button" fDragHandle title="Déplacer la table" [disabled]="disableOptions()">
       <span class="material-symbols-rounded">drag_pan</span>
     </button>
   </nav>

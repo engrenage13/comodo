@@ -35,6 +35,11 @@
   &:hover, &:focus {
     color: var(--color-main);
   }
+
+  &:disabled {
+    color: #92929b;
+    cursor: not-allowed;
+  }
 }
 
 .table-title {
