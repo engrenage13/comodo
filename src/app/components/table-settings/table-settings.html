@@ -6,10 +6,28 @@
   <form class="column gap-s" onsubmit="return false">
     <div class="column gap-xs">
       <label for="title" class="label">Nom de la table</label>
-      <input id="title" class="input" [formField]="tableForm.title" />
+      <input id="title" class="input" type="text" [formField]="tableForm.title" />
+      @if (tableForm.title().invalid()) {
+        <ul class="column error-list">
+          @for (error of tableForm.title().errors(); track $index) {
+            <li class="form-error">{{error.message}}</li>
+          }
+        </ul>
+      }
     </div>
 
-    <button class="button row gap-xs center" (click)="saveTableModifications()">
+    <div class="column gap-xs">
+      <p class="no-margin">Colonnes</p>
+      @for (column of tableDatas().columns; track $index) {
+        <app-column-form [columnDatas]="column" (valid)="hasInvalidColumn.set($event)" />
+      }
+    </div>
+
+    <button 
+      class="button row gap-xs center" 
+      (click)="saveTableModifications()"
+      [disabled]="isInvalid()"
+    >
       <span class="material-symbols-rounded">save</span> Enregistrer les modifications
     </button>
   </form>

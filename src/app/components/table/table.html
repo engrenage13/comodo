@@ -18,6 +18,17 @@
     </button>
   </nav>
   <div class="table-title">{{content().title}}</div>
+
+  <table>
+    <tbody>
+      @for (column of content().columns; track $index) {
+        <tr>
+          <td>{{column.name}}</td>
+          <td>{{column.type}}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
   <!--<div
     fConnector
     fConnectorId="source-1"

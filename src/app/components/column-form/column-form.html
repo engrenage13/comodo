@@ -1,0 +1,16 @@
+<div class="column gap-xs">
+  <form class="row column-row" onsubmit="return false">
+    <div class="column gap-xxs grow">
+      <label for="name">Nom</label>
+      <input id="name" type="text" class="input row grow" [formField]="columnForm.name" />
+    </div>
+  </form>
+
+  @if (columnForm().touched() && columnForm().invalid()) {
+    <ul class="column error-list">
+      @for (error of columnForm.name().errors(); track $index) {
+        <li class="form-error">{{error.message}}</li>
+      }
+    </ul>
+  }
+</div>
