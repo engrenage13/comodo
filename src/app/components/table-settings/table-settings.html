@@ -18,8 +18,12 @@
 
     <div class="column gap-xs">
       <p class="no-margin">Colonnes</p>
-      @for (column of tableDatas().columns; track $index) {
-        <app-column-form [columnDatas]="column" (valid)="hasInvalidColumn.set($event)" />
+      @for (column of columns(); track $position; let $position = $index) {
+        <app-column-form 
+          [columnDatas]="column.column" 
+          (columnDatasChange)="updateColumnData($position, $event)"
+          (isInvalid)="updateColumnValidity($position, $event)" 
+        />
       }
     </div>
 

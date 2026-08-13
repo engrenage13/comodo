@@ -1,4 +1,4 @@
-import { Component, effect, model, output } from '@angular/core';
+import { afterRenderEffect, Component, model, output } from '@angular/core';
 import { iColumn } from '../../types/interfaces';
 import { form, required, FormField } from '@angular/forms/signals';
 
@@ -13,7 +13,7 @@ export class ColumnForm {
   columnDatas = model.required<iColumn>();
 
   // Output
-  valid = output<boolean>();
+  isInvalid = output<boolean>();
 
   // Form
   columnForm = form(this.columnDatas, (schema) => {
@@ -21,8 +21,10 @@ export class ColumnForm {
   });
 
   constructor() {
-    effect(() => {
-      this.valid.emit(this.columnForm().valid());
+    afterRenderEffect(() => {
+      if (this.columnForm().touched()) {
+        this.isInvalid.emit(this.columnForm().invalid());
+      }
     });
   }
 }
