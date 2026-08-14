@@ -2,7 +2,7 @@ import { Component, computed, inject, input, linkedSignal, output, signal } from
 import { SidePanel } from "../side-panel/side-panel";
 import { iColumn, iTable } from '../../types/interfaces';
 import { Table } from '../../services/table';
-import { form, required, FormField } from '@angular/forms/signals';
+import { form, required, FormField, disabled } from '@angular/forms/signals';
 import { ColumnForm } from "../column-form/column-form";
 
 @Component({
@@ -21,21 +21,29 @@ export class TableSettings {
   closePanel = output<void>();
 
   // Columns
-  columns = linkedSignal<{column: iColumn, invalid: boolean}[]>(() => 
+  columns = linkedSignal<{column: iColumn, invalid: boolean, checked?: boolean}[]>(() => 
     this.tableDatas().columns.map(column => {
       return {column, invalid: false};
     })
   );
   hasInvalidColumn = signal<boolean>(false);
+  deleteColumnMode = signal<boolean>(false);
 
   // Form
   tableModel = linkedSignal<iTable>(() => this.tableDatas());
   tableForm = form(this.tableModel, (schema) => {
     required(schema.title, {message: "La table doit avoir un nom."});
+    disabled(schema.title, {when: () => this.deleteColumnMode()});
   });
   isInvalid = computed(() => 
     (this.tableForm().touched() && this.tableForm().invalid()) || this.hasInvalidColumn()
   );
+
+  addNewColumn(): void {
+    this.columns.update(value => {
+      return [...value, {column: this.tableService.generateEmptyColumn(value.length), invalid: false}];
+    });
+  }
 
   deleteTable(): void {
     this.tableService.deleteTable(this.tableDatas().id);
@@ -51,9 +59,22 @@ export class TableSettings {
     this.closePanel.emit();
   }
 
+  switchColumnMode(): void {
+    this.deleteColumnMode.update(value => !value);
+    if (!this.deleteColumnMode()) {
+      this.columns().forEach(column => column.checked = false);
+    }
+  }
+
   updateColumnData(columnIndex: number, newColumnData: iColumn): void {
     if (columnIndex > -1) {
       this.columns()[columnIndex].column = newColumnData;
+    }
+  }
+
+  updateColumnSelection(columnIndex: number, columnChecked: boolean): void {
+    if (columnIndex > -1) {
+      this.columns()[columnIndex].checked = columnChecked;
     }
   }
 

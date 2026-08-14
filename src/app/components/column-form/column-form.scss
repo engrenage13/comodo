@@ -1,5 +1,10 @@
 .column-row {
   background: #dedddd;
+  border: 2px solid #dedddd;
   border-radius: .5rem;
   padding: .2rem;
+}
+
+.checked {
+  border-color: var(--color-main);
 }

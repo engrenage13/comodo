@@ -3,7 +3,7 @@
   size="s"
   (closePanel)="closePanel.emit()"
 >
-  <form class="column gap-s" onsubmit="return false">
+  <form class="column gap-s table-form" onsubmit="return false">
     <div class="column gap-xs">
       <label for="title" class="label">Nom de la table</label>
       <input id="title" class="input" type="text" [formField]="tableForm.title" />
@@ -17,28 +17,59 @@
     </div>
 
     <div class="column gap-xs">
-      <p class="no-margin">Colonnes</p>
+      <div class="row between sticky">
+        <h3 class="no-margin">Colonnes</h3>
+
+        <div class="row gap-xs">
+          <button 
+            class="button ico-button secondary" 
+            (click)="addNewColumn()" 
+            title="Ajouter une colonne"
+            [disabled]="deleteColumnMode()"
+          >
+            <span class="material-symbols-rounded">add</span>
+          </button>
+          <button 
+            class="button ico-button critical" 
+            (click)="switchColumnMode()" 
+            [title]="deleteColumnMode() ? 'Annuler la suppression' : 'Supprimer des colonnes'"
+          >
+            <span class="material-symbols-rounded">{{deleteColumnMode() ? 'close' : 'delete'}}</span>
+          </button>
+        </div>
+      </div>
       @for (column of columns(); track $position; let $position = $index) {
         <app-column-form 
           [columnDatas]="column.column" 
+          [checkBoxMode]="deleteColumnMode()"
+          [checked]="column.checked ?? false"
           (columnDatasChange)="updateColumnData($position, $event)"
           (isInvalid)="updateColumnValidity($position, $event)" 
+          (checkedChange)="updateColumnSelection($position, $event)"
         />
       }
     </div>
 
-    <button 
-      class="button row gap-xs center" 
-      (click)="saveTableModifications()"
-      [disabled]="isInvalid()"
-    >
-      <span class="material-symbols-rounded">save</span> Enregistrer les modifications
-    </button>
+    @if (deleteColumnMode()) {
+      <button class="button critical">
+        <span class="material-symbols-rounded">delete</span> Supprimer les colonnes sélectionnées
+      </button>
+    } @else {
+      <button 
+        class="button" 
+        (click)="saveTableModifications()"
+        [disabled]="isInvalid()"
+      >
+        <span class="material-symbols-rounded">save</span> Enregistrer les modifications
+      </button>
+    }
   </form>
 
-  <hr class="separator" />
+  @if (!deleteColumnMode()) {
+    <hr class="separator" />
 
-  <button class="button critical row gap-xs center" (click)="deleteTable()">
-    <span class="material-symbols-rounded">delete</span> Supprimer la table
-  </button>
+    <button class="button critical" (click)="deleteTable()">
+      <span class="material-symbols-rounded">delete</span> Supprimer la table
+    </button>
+  }
 </app-side-panel>

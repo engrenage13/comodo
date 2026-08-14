@@ -57,6 +57,10 @@ body {
   align-items: flex-end;
 }
 
+.between {
+  justify-content: space-between;
+}
+
 .grow {
   flex-grow: 1;
 }
@@ -102,4 +106,52 @@ body {
   border-radius: .5rem;
   border: none;
   background: var(--color-background-secondary);
+}
+
+.button {
+  @extend .row, .center, .gap-xs;
+
+  background: var(--color-main);
+  border: none;
+  border-radius: .5rem;
+  color: var(--color-white);
+  padding: .3rem .5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+
+  &:hover, &:focus {
+    background: var(--color-main-active);
+  }
+
+  &.secondary {
+    background: #122c8a;
+
+    &:hover, &:focus {
+      background: #1634a0;
+    }
+  }
+
+  &.critical {
+    background: #bd1616;
+
+    &:hover, &:focus {
+      background: #d61919;
+    }
+  }
+
+  &.ico-button {
+    padding: .3rem;
+    font-size: 1.1rem;
+  }
+
+  &:disabled {
+    background: #9c9a9a;
+    color: #2f2d2d;
+    cursor: not-allowed;
+
+    &:hover, &:focus {
+      background: #9c9a9a;
+    }
+  }
 }

@@ -1,5 +1,5 @@
 import { Service, signal } from '@angular/core';
-import { eDataType, iCoord, iTable } from '../types/interfaces';
+import { eDataType, iColumn, iCoord, iTable } from '../types/interfaces';
 
 @Service()
 export class Table {
@@ -8,7 +8,7 @@ export class Table {
       id: 1, 
       title: "Table 1", 
       columns: [
-        {name: "Column 1", type: eDataType.String, order: 0},
+        this.generateEmptyColumn(),
       ], 
       coords: {x: 32, y: 64}
     },
@@ -16,12 +16,13 @@ export class Table {
       id: 2, 
       title: "Table 2", 
       columns: [
-        {name: "Column 1", type: eDataType.String, order: 0},
+        this.generateEmptyColumn(),
       ], 
       coords: {x: 200, y: 64}
     }
   ]);
 
+  // Table management
   createTable(coords: iCoord): void {
     this.tables.update(value => {
       const newTable: iTable = {
@@ -43,5 +44,11 @@ export class Table {
 
   deleteTable(tableId: number): void {
     this.tables.update(value => value.filter(table => table.id != tableId));
+  }
+
+  // Column management
+  generateEmptyColumn(currentColumnCount: number = 0): iColumn {
+    const nextColumnNumber: number = currentColumnCount + 1;
+    return {name: "Column " + nextColumnNumber, type: eDataType.String, order: currentColumnCount};
   }
 }

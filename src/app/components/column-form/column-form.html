@@ -1,5 +1,5 @@
-<div class="column gap-xs">
-  <form class="row column-row" onsubmit="return false">
+<div class="column gap-xs" (click)="check()">
+  <form class="row column-row" [class.checked]="checked()" onsubmit="return false">
     <div class="column gap-xxs grow">
       <label for="name">Nom</label>
       <input id="name" type="text" class="input row grow" [formField]="columnForm.name" />

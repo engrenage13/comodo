@@ -1,6 +1,6 @@
-import { afterRenderEffect, Component, model, output } from '@angular/core';
+import { afterRenderEffect, Component, input, model, output } from '@angular/core';
 import { iColumn } from '../../types/interfaces';
-import { form, required, FormField } from '@angular/forms/signals';
+import { form, required, FormField, disabled } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-column-form',
@@ -9,8 +9,12 @@ import { form, required, FormField } from '@angular/forms/signals';
   styleUrl: './column-form.scss',
 })
 export class ColumnForm {
-  // Model
+  // Input
+  checkBoxMode = input<boolean>(false);
+
+  // Models
   columnDatas = model.required<iColumn>();
+  checked = model<boolean>(false);
 
   // Output
   isInvalid = output<boolean>();
@@ -18,6 +22,7 @@ export class ColumnForm {
   // Form
   columnForm = form(this.columnDatas, (schema) => {
     required(schema.name, {message: "La colonne doit avoir un nom."});
+    disabled(schema.name, {when: () => this.checkBoxMode()});
   });
 
   constructor() {
@@ -26,5 +31,11 @@ export class ColumnForm {
         this.isInvalid.emit(this.columnForm().invalid());
       }
     });
+  }
+
+  check(): void {
+    if (this.checkBoxMode()) {
+      this.checked.update(value => !value);
+    }
   }
 }
