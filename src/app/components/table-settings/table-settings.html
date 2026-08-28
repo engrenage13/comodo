@@ -1,6 +1,6 @@
 <app-side-panel
   [title]="'Modifier la table'"
-  size="s"
+  size="m"
   (closePanel)="closePanel.emit()"
 >
   <form class="column gap-s table-form" onsubmit="return false">
@@ -51,7 +51,7 @@
     </div>
 
     @if (deleteColumnMode()) {
-      <button class="button critical">
+      <button class="button critical" (click)="deleteCheckedColumns()">
         <span class="material-symbols-rounded">delete</span> Supprimer les colonnes sélectionnées
       </button>
     } @else {

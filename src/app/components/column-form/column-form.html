@@ -1,16 +1,43 @@
-<div class="column gap-xs" (click)="check()">
-  <form class="row column-row" [class.checked]="checked()" onsubmit="return false">
-    <div class="column gap-xxs grow">
-      <label for="name">Nom</label>
-      <input id="name" type="text" class="input row grow" [formField]="columnForm.name" />
-    </div>
-  </form>
-
-  @if (columnForm().touched() && columnForm().invalid()) {
-    <ul class="column error-list">
-      @for (error of columnForm.name().errors(); track $index) {
-        <li class="form-error">{{error.message}}</li>
+@if (checkBoxMode()) {
+  <!-- Check box -->
+  <button class="row gap-xs column-checkable" (click)="check()" [class.checked]="checked()">
+    <div class="checked-area row center">
+      @if (checked()) {
+        <span class="material-symbols-rounded icon">check</span>
       }
-    </ul>
-  }
-</div>
+    </div>
+
+    <p class="no-margin">{{columnDatas().name}}</p>
+  </button>
+} @else {
+  <!-- Column form -->
+  <div class="column gap-xs">
+    <form class="row column-row gap-xxs" onsubmit="return false">
+      <div class="column gap-xxs grow">
+        <label for="name">Nom</label>
+        <input id="name" type="text" class="input row grow" [formField]="columnForm.name" />
+      </div>
+      <div class="column gap-xxs grow">
+        <label for="type">Type</label>
+        <select id="type" class="input row grow" [formField]="columnForm.type">
+          <option value="string">String</option>
+          <option value="int">Integer</option>
+          <option value="float">Float</option>
+          <option value="blob">Blob</option>
+        </select>
+      </div>
+      <div class="column gap-xxs grow">
+        <label for="maxLength">Longueur max</label>
+        <input id="maxLength" type="text" class="input row" [formField]="columnForm.maxlength!" />
+      </div>
+    </form>
+
+    @if (columnForm().touched() && columnForm().invalid()) {
+      <ul class="column error-list">
+        @for (error of columnForm.name().errors(); track $index) {
+          <li class="form-error">{{error.message}}</li>
+        }
+      </ul>
+    }
+  </div>
+}

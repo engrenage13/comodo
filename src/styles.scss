@@ -7,14 +7,16 @@
 
 html {
   --color-main: #365ace;
-  --color-main-active: #3c63e4;
-  --color-white: white;
-  --color-background-secondary: #f0efef;
+  --color-main-fade: #3c63e4;
+  --color-background: white;
+  --color-background-fade: #f0efef;
+  --color-text: #333333;
 }
 
 body {
   margin: 0;
   font-family: Outfit, serif;
+  color: var(--color-text);
 }
 
 .material-symbols-rounded {
@@ -105,7 +107,8 @@ body {
   padding: .5rem;
   border-radius: .5rem;
   border: none;
-  background: var(--color-background-secondary);
+  background: var(--color-background-fade);
+  color: inherit;
 }
 
 .button {
@@ -114,14 +117,14 @@ body {
   background: var(--color-main);
   border: none;
   border-radius: .5rem;
-  color: var(--color-white);
+  color: var(--color-background);
   padding: .3rem .5rem;
   font-size: 1rem;
   cursor: pointer;
   transition: all .2s ease-in-out;
 
   &:hover, &:focus {
-    background: var(--color-main-active);
+    background: var(--color-main-fade);
   }
 
   &.secondary {

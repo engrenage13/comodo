@@ -1,6 +1,6 @@
 import { afterRenderEffect, Component, input, model, output } from '@angular/core';
-import { iColumn } from '../../types/interfaces';
-import { form, required, FormField, disabled } from '@angular/forms/signals';
+import { eDataType, iColumn } from '../../types/interfaces';
+import { form, required, FormField, disabled, min, hidden } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-column-form',
@@ -22,7 +22,12 @@ export class ColumnForm {
   // Form
   columnForm = form(this.columnDatas, (schema) => {
     required(schema.name, {message: "La colonne doit avoir un nom."});
-    disabled(schema.name, {when: () => this.checkBoxMode()});
+    hidden(
+      schema.maxlength!, 
+      {when: ({valueOf}) => 
+        [eDataType.Integer, eDataType.Float, eDataType.Blob].includes(valueOf(schema.type))
+      }
+    );
   });
 
   constructor() {

@@ -1,10 +1,39 @@
+.column-row, .column-checkable {
+  border: none;
+  border-radius: .5rem;
+}
+
 .column-row {
   background: #dedddd;
-  border: 2px solid #dedddd;
-  border-radius: .5rem;
   padding: .2rem;
 }
 
-.checked {
-  border-color: var(--color-main);
+.column-checkable {
+  background: var(--color-background-fade);
+  width: 100%;
+  padding: .5rem;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+
+  &:hover, &:focus {
+    background: var(--color-main-fade);
+    color: var(--color-background);
+  }
+
+  &.checked {
+    background: var(--color-main);
+    color: var(--color-background);
+
+    &:hover, &:focus {
+      background: var(--color-main-fade);
+    }
+  }
+
+  .checked-area {
+    background: var(--color-background);
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    color: var(--color-text);
+  }
 }

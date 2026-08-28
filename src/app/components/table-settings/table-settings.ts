@@ -85,4 +85,9 @@ export class TableSettings {
     const index: number = this.columns().findIndex(column => column.invalid);
     this.hasInvalidColumn.set(index > -1);
   }
+
+  deleteCheckedColumns(): void {
+    this.columns.set(this.columns().filter(column => !column.checked));
+    this.deleteColumnMode.set(false);
+  }
 }
