@@ -11,6 +11,7 @@ html {
   --color-background: white;
   --color-background-fade: #f0efef;
   --color-text: #333333;
+  --color-grey: #b7b7b7;
 }
 
 body {
@@ -109,6 +110,11 @@ body {
   border: none;
   background: var(--color-background-fade);
   color: inherit;
+
+  &:disabled {
+    cursor: not-allowed;
+    background: var(--color-grey);
+  }
 }
 
 .button {
@@ -127,14 +133,6 @@ body {
     background: var(--color-main-fade);
   }
 
-  &.secondary {
-    background: #122c8a;
-
-    &:hover, &:focus {
-      background: #1634a0;
-    }
-  }
-
   &.critical {
     background: #bd1616;
 
@@ -149,12 +147,22 @@ body {
   }
 
   &:disabled {
-    background: #9c9a9a;
+    background: var(--color-grey);
     color: #2f2d2d;
     cursor: not-allowed;
 
     &:hover, &:focus {
-      background: #9c9a9a;
+      background: var(--color-grey);
     }
+  }
+}
+
+.ghost-button {
+  @extend .button;
+  background: transparent;
+  color: var(--color-main);
+
+  &:hover, &:focus {
+    color: var(--color-background);
   }
 }

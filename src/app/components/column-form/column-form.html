@@ -12,23 +12,38 @@
 } @else {
   <!-- Column form -->
   <div class="column gap-xs">
-    <form class="row column-row gap-xxs" onsubmit="return false">
-      <div class="column gap-xxs grow">
-        <label for="name">Nom</label>
-        <input id="name" type="text" class="input row grow" [formField]="columnForm.name" />
-      </div>
-      <div class="column gap-xxs grow">
-        <label for="type">Type</label>
-        <select id="type" class="input row grow" [formField]="columnForm.type">
-          <option value="string">String</option>
-          <option value="int">Integer</option>
-          <option value="float">Float</option>
-          <option value="blob">Blob</option>
-        </select>
-      </div>
-      <div class="column gap-xxs grow">
-        <label for="maxLength">Longueur max</label>
-        <input id="maxLength" type="text" class="input row" [formField]="columnForm.maxlength!" />
+    <form class="row column-row gap-xs" onsubmit="return false">
+      <button 
+        class="ico-button" 
+        [class]="columnDatas().isPrimaryKey ? 'button option-selected' : 'ghost-button'" 
+        [title]="`Clé primaire : ${columnDatas().isPrimaryKey ? 'Oui' : 'Non'}`"
+        (click)="columnDatas().isPrimaryKey = !columnDatas().isPrimaryKey"
+      >
+        <span class="material-symbols-rounded">vpn_key</span>
+        @if (columnDatas().isPrimaryKey) {
+          <div class="badge row center" animate.enter="apparition">
+            <span class="material-symbols-rounded checked-icon">check</span>
+          </div>
+        }
+      </button>
+      <div class="row gap-xxs grow">
+        <div class="column gap-xxs grow">
+          <label for="name">Nom</label>
+          <input id="name" type="text" class="input row grow" [formField]="columnForm.name" />
+        </div>
+        <div class="column gap-xxs grow">
+          <label for="type">Type</label>
+          <select id="type" class="input row grow" [formField]="columnForm.type">
+            <option value="string">String</option>
+            <option value="int">Integer</option>
+            <option value="float">Float</option>
+            <option value="blob">Blob</option>
+          </select>
+        </div>
+        <div class="column gap-xxs field-xxs">
+          <label for="maxLength">Longueur max</label>
+          <input id="maxLength" type="number" class="input row" [formField]="columnForm.maxlength" />
+        </div>
       </div>
     </form>
 

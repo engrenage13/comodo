@@ -26,7 +26,7 @@ export class Table {
   createTable(coords: iCoord): void {
     this.tables.update(value => {
       const newTable: iTable = {
-        columns: [{name: "Column 1", type: eDataType.String, order: 0}],
+        columns: [{name: "Column 1", type: eDataType.String, order: 0, maxlength: ""}],
         coords,
         id: value.length + 1,
         title: `Table ${value.length + 1}`
@@ -49,6 +49,11 @@ export class Table {
   // Column management
   generateEmptyColumn(currentColumnCount: number = 0): iColumn {
     const nextColumnNumber: number = currentColumnCount + 1;
-    return {name: "Column " + nextColumnNumber, type: eDataType.String, order: currentColumnCount};
+    return {
+      name: "Column " + nextColumnNumber, 
+      type: eDataType.String, 
+      order: currentColumnCount, 
+      maxlength: "",
+    };
   }
 }

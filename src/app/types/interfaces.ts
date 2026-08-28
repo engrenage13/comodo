@@ -8,7 +8,7 @@ export enum eDataType {
 export interface iColumn {
   name: string;
   type: eDataType;
-  maxlength?: string;
+  maxlength: string;
   commentary?: string;
   isPrimaryKey?: boolean;
   isUnique?: boolean;
