@@ -4,10 +4,11 @@ import { iColumn, iTable } from '../../types/interfaces';
 import { Table } from '../../services/table';
 import { form, required, FormField, disabled } from '@angular/forms/signals';
 import { ColumnForm } from "../column-form/column-form";
+import { CdkDragDrop, moveItemInArray, CdkDropList } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-table-settings',
-  imports: [SidePanel, FormField, ColumnForm],
+  imports: [SidePanel, FormField, ColumnForm, CdkDropList],
   templateUrl: './table-settings.html',
   styleUrl: './table-settings.scss',
 })
@@ -48,6 +49,10 @@ export class TableSettings {
   deleteTable(): void {
     this.tableService.deleteTable(this.tableDatas().id);
     this.closePanel.emit();
+  }
+
+  drop(event: CdkDragDrop<iColumn[]>) {
+    moveItemInArray(this.columns(), event.previousIndex, event.currentIndex);
   }
 
   saveTableModifications(): void {

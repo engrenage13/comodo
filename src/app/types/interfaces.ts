@@ -12,7 +12,7 @@ export interface iColumn {
   commentary?: string;
   isPrimaryKey?: boolean;
   isUnique?: boolean;
-  isNullable?: boolean;
+  isNotNull?: boolean;
   order: number;
 }
 

@@ -162,7 +162,31 @@ body {
   background: transparent;
   color: var(--color-main);
 
-  &:hover, &:focus {
+  &:hover:not(:disabled), &:focus {
     color: var(--color-background);
+  }
+}
+
+.chips {
+  @extend .ghost-button;
+  padding-right: 1rem;
+
+  &::before {
+    content: "";
+    transition: all .2s ease-in-out;
+    height: 1.5rem;
+    width: 0;
+  }
+
+  &.selected {
+    @extend .button;
+
+    &::before {
+      @extend .row, .center;
+      content: "check";
+      font-family: "Material Symbols Rounded";
+      font-size: 1.5rem;
+      width: 1.5rem;
+    }
   }
 }

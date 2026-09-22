@@ -3,12 +3,13 @@
   [fNodeId]="id()"
   [fNodePosition]="content().coords"
   [fNodeDraggingDisabled]="disableOptions()"
+  [fAutoSizeToFitChildren]="true"
 >
   <nav class="row right options-row">
-    <button 
-    class="ico-button classic" 
-    title="Modifier la table" 
-    (click)="edit.emit()" 
+    <button
+    class="ico-button classic"
+    title="Modifier la table"
+    (click)="edit.emit()"
     [disabled]="disableOptions()"
     >
       <span class="material-symbols-rounded">table_edit</span>
@@ -17,18 +18,35 @@
       <span class="material-symbols-rounded">drag_pan</span>
     </button>
   </nav>
-  <div class="table-title">{{content().title}}</div>
+  <div class="column table-content">
+    <p class="table-title">{{content().title}}</p>
 
-  <table class="column-table">
-    <tbody>
-      @for (column of content().columns; track $index) {
-        <tr>
-          <td>{{column.name}}</td>
-          <td>{{column.type}}</td>
-        </tr>
-      }
-    </tbody>
-  </table>
+    <table class="column-table">
+      <tbody>
+        @for (column of content().columns; track $index) {
+          <tr [title]="column.isPrimaryKey ? 'Clé primaire' : ''">
+            <td fConnector [fConnectorId]="`t${id()}-${column.name}-1`"></td>
+            <td [class.empty]="!column.isPrimaryKey">
+              @if (column.isPrimaryKey) {
+                <span class="material-symbols-rounded">vpn_key</span>
+              }
+            </td>
+            <td [class.underline]="column.isUnique">{{column.name}}</td>
+            <td>
+              {{column.type}}
+              @if (column.type == 'string' && column.maxlength) {
+                ({{column.maxlength}})
+              }
+            </td>
+            <td class="description" [class.empty]="!column.isNotNull">
+              {{column.isNotNull ? 'non null' : ''}}
+            </td>
+            <td fConnector [fConnectorId]="`t${id()}-${column.name}-2`"></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
   <!--<div
     fConnector
     fConnectorId="source-1"

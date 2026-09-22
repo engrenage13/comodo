@@ -42,31 +42,8 @@
   width: 7rem;
 }
 
-.option-selected {
-  position: relative;
-
-  .badge {
-    position: absolute;
-    right: -.2rem;
-    bottom: -.2rem;
-    background: var(--color-main);
-    color: var(--color-background);
-    width: 1rem;
-    height: 1rem;
-    border-radius: 50%;
-    
-    .checked-icon {
-      font-size: 1rem;
-    }
+.drag-handle {
+  &:hover, &:focus {
+    cursor: move;
   }
-}
-
-@keyframes appa {
-  from {
-    opacity: 0;
-    transform: scale(0);
-  }
-}
-.apparition {
-  animation: appa .2s ease-out;
 }

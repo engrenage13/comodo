@@ -16,7 +16,7 @@
       }
     </div>
 
-    <div class="column gap-xs">
+    <div class="column gap-xs" cdkDropList (cdkDropListDropped)="drop($event)">
       <div class="row between sticky">
         <h3 class="no-margin">Colonnes</h3>
 

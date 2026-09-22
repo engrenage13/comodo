@@ -1,10 +1,11 @@
 import { afterRenderEffect, Component, input, model, output } from '@angular/core';
 import { eDataType, iColumn } from '../../types/interfaces';
 import { form, required, FormField, disabled } from '@angular/forms/signals';
+import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-column-form',
-  imports: [FormField],
+  imports: [FormField, CdkDrag, CdkDragHandle],
   templateUrl: './column-form.html',
   styleUrl: './column-form.scss',
 })
@@ -39,6 +40,14 @@ export class ColumnForm {
   check(): void {
     if (this.checkBoxMode()) {
       this.checked.update(value => !value);
+    }
+  }
+
+  declareAsPrimaryKey(): void {
+    this.columnDatas().isPrimaryKey = !this.columnDatas().isPrimaryKey;
+    if (this.columnDatas().isPrimaryKey) {
+      this.columnDatas().isUnique = true;
+      this.columnDatas().isNotNull = true;
     }
   }
 }
