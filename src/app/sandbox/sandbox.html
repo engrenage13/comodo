@@ -1,20 +1,29 @@
-<f-flow fDraggable [fDraggableDisabled]="!isSelector()">
+<f-flow
+  fDraggable
+  [fDraggableDisabled]="!isSelector()"
+  (fCreateConnection)="createConnection($event)"
+  (fReassignConnection)="reassignConnection($event)"
+>
   <f-selection-area />
-  <f-canvas fZoom #Canvas>
-    <!--<f-connection 
-      fSourceId="source-1" 
-      fTargetId="target-1" 
-      fBehavior="floating" 
-      fType="adaptive-curve"
-    ></f-connection>
-    <f-connection fSourceId="source-1" fTargetId="target-2"></f-connection>-->
+  <f-canvas fZoom>
+    <f-connection-for-create fType="segment" />
+    <f-snap-connection [fSnapThreshold]="50" fType="segment" />
+
+    @for (connection of connections(); track $index) {
+      <f-connection
+        fType="segment"
+        [fSourceId]="connection.source"
+        [fTargetId]="connection.target"
+        [fReassignableStart]="true"
+      />
+    }
 
     <ng-container ngProjectAs="[fNodes]">
       @for(table of tables(); track table.id) {
-        <app-table 
-          [content]="table" 
-          [id]="table.id" 
-          [disableOptions]="!isSelector()" 
+        <app-table
+          [content]="table"
+          [id]="table.id"
+          [disableOptions]="!isSelector()"
           (edit)="editedTable.set(table)"
         />
       }

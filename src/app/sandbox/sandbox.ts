@@ -1,5 +1,5 @@
 import { Component, computed, inject, signal, viewChild } from '@angular/core';
-import { F_CANVAS, FFlowModule } from '@foblex/flow';
+import {F_CANVAS, FCreateConnectionEvent, FFlowModule, FReassignConnectionEvent} from '@foblex/flow';
 import { Toolbar } from '../components/toolbar/toolbar';
 import { Table as TableService } from '../services/table';
 import { Table } from "../components/table/table";
@@ -18,6 +18,9 @@ export class Sandbox {
   private readonly tableService = inject(TableService);
   private readonly toolsService = inject(Tools);
 
+  // Connections
+  connections = signal<{ source: string; target: string }[]>([]);
+
   // Tables
   tables = this.tableService.tables;
   editedTable = signal<iTable|undefined>(undefined);
@@ -35,6 +38,41 @@ export class Sandbox {
     });
   }
 
+  createConnection(event: FCreateConnectionEvent): void {
+    const target: string|undefined = event.targetId;
+    const source: string = event.sourceId;
+    if (!target || this.cannotCreateConnection(source, target)) {
+      return;
+    }
+    this.connections.update((x) =>
+      [...x, { source: event.sourceId, target }]
+    );
+  }
+
+  protected reassignConnection(event: FReassignConnectionEvent): void {
+    if (
+      (!event.nextTargetId && !event.nextSourceId)
+      || this.cannotCreateConnection(
+        event.nextSourceId ?? event.previousSourceId,
+        event.nextTargetId ?? event.previousTargetId
+      )
+    ) {
+      return;
+    }
+    this.connections.update((link) => {
+      const connection = link.find(
+        (c) => c.source === event.previousSourceId && c.target === event.previousTargetId,
+      );
+      if (!connection) {
+        throw new Error('Connection not found');
+      }
+      connection.source = event.nextSourceId || connection.source;
+      connection.target = event.nextTargetId || connection.target;
+
+      return [...link];
+    });
+  }
+
   createTable(): void {
     if (!this.isSelector()) {
       const canvasCoords: IPoint = this.canvas()!.getPosition();
@@ -43,5 +81,17 @@ export class Sandbox {
         y: this.cursorCoords().y - canvasCoords.y
       });
     }
+  }
+
+  private cannotCreateConnection(source: string, target: string): boolean {
+    const targetName: string[] = target.split("_");
+    const sourceName: string[] = source.split("_");
+    return (sourceName[0] == targetName[0])
+      || this.connections().some(link => {
+        const linkSourceName: string[] = link.source.split("_");
+        const linkTargetName: string[] = link.target.split("_");
+        return (linkSourceName[0] == sourceName[0] && linkTargetName[0] == targetName[0])
+          || (linkSourceName[0] == targetName[0] && linkTargetName[0] == sourceName[0]);
+      });
   }
 }
