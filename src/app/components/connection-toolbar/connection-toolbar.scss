@@ -1,0 +1,23 @@
+::ng-deep f-flow {
+  .f-connection {
+    .f-connection-content {
+      .edit-area {
+        display: none;
+      }
+    }
+  }
+
+  &:not(.f-dragging) {
+    .f-connection.f-selected {
+      .f-connection-content {
+        .edit-area {
+          display: flex;
+        }
+
+        .read-area {
+          display: none;
+        }
+      }
+    }
+  }
+}

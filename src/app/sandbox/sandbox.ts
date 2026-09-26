@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal, viewChild } from '@angular/core';
+import {Component, computed, inject, signal, viewChild} from '@angular/core';
 import {F_CANVAS, FCreateConnectionEvent, FFlowModule, FReassignConnectionEvent} from '@foblex/flow';
 import { Toolbar } from '../components/toolbar/toolbar';
 import { Table as TableService } from '../services/table';
@@ -7,10 +7,11 @@ import { Tools } from '../services/tools';
 import { iCoord, iTable } from '../types/interfaces';
 import { IPoint } from '@foblex/2d';
 import { TableSettings } from "../components/table-settings/table-settings";
+import {ConnectionToolbar} from '../components/connection-toolbar/connection-toolbar';
 
 @Component({
   selector: 'app-sandbox',
-  imports: [FFlowModule, Toolbar, Table, TableSettings],
+  imports: [FFlowModule, Toolbar, Table, TableSettings, ConnectionToolbar],
   templateUrl: './sandbox.html',
   styleUrl: './sandbox.scss',
 })
@@ -47,6 +48,14 @@ export class Sandbox {
     this.connections.update((x) =>
       [...x, { source: event.sourceId, target }]
     );
+  }
+
+  protected deleteConnection(event: FReassignConnectionEvent): void {
+    const connectionIndex: number = this.findConnectionIndex(event.previousSourceId, event.previousTargetId);
+    if (connectionIndex == -1) {
+      throw new Error("Connection not found!");
+    }
+    this.connections.update(value => value.splice(connectionIndex, 1));
   }
 
   protected reassignConnection(event: FReassignConnectionEvent): void {
@@ -93,5 +102,11 @@ export class Sandbox {
         return (linkSourceName[0] == sourceName[0] && linkTargetName[0] == targetName[0])
           || (linkSourceName[0] == targetName[0] && linkTargetName[0] == sourceName[0]);
       });
+  }
+
+  private findConnectionIndex(source: string, target: string): number {
+    return this.connections().findIndex(connection =>
+      connection.source === source && connection.target === target
+    );
   }
 }

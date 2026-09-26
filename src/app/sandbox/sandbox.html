@@ -15,7 +15,9 @@
         [fSourceId]="connection.source"
         [fTargetId]="connection.target"
         [fReassignableStart]="true"
-      />
+      >
+        <div fConnectionContent connection-toolbar></div>
+      </f-connection>
     }
 
     <ng-container ngProjectAs="[fNodes]">
