@@ -4,10 +4,11 @@ import { Toolbar } from '../components/toolbar/toolbar';
 import { Table as TableService } from '../services/table';
 import { Table } from "../components/table/table";
 import { Tools } from '../services/tools';
-import { iCoord, iTable } from '../types/interfaces';
+import { ICoord, ITable } from '../types/interfaces';
 import { IPoint } from '@foblex/2d';
 import { TableSettings } from "../components/table-settings/table-settings";
 import {ConnectionToolbar} from '../components/connection-toolbar/connection-toolbar';
+import {Connection} from '../services/connection';
 
 @Component({
   selector: 'app-sandbox',
@@ -16,19 +17,20 @@ import {ConnectionToolbar} from '../components/connection-toolbar/connection-too
   styleUrl: './sandbox.scss',
 })
 export class Sandbox {
-  private readonly tableService = inject(TableService);
-  private readonly toolsService = inject(Tools);
+  private readonly tableService: TableService = inject(TableService);
+  private readonly toolsService: Tools = inject(Tools);
+  private readonly connectionService: Connection = inject(Connection);
 
   // Connections
-  connections = signal<{ source: string; target: string }[]>([]);
+  connections = this.connectionService.connections;
 
   // Tables
   tables = this.tableService.tables;
-  editedTable = signal<iTable|undefined>(undefined);
+  editedTable = signal<ITable|undefined>(undefined);
 
   // Cursor
   isSelector = computed(() => this.toolsService.cursorMode() == 0);
-  cursorCoords = signal<iCoord>({x: 0, y: 0});
+  cursorCoords = signal<ICoord>({x: 0, y: 0});
 
   // Canvas
   readonly canvas = viewChild(F_CANVAS);
@@ -40,46 +42,11 @@ export class Sandbox {
   }
 
   createConnection(event: FCreateConnectionEvent): void {
-    const target: string|undefined = event.targetId;
-    const source: string = event.sourceId;
-    if (!target || this.cannotCreateConnection(source, target)) {
-      return;
-    }
-    this.connections.update((x) =>
-      [...x, { source: event.sourceId, target }]
-    );
-  }
-
-  protected deleteConnection(event: FReassignConnectionEvent): void {
-    const connectionIndex: number = this.findConnectionIndex(event.previousSourceId, event.previousTargetId);
-    if (connectionIndex == -1) {
-      throw new Error("Connection not found!");
-    }
-    this.connections.update(value => value.splice(connectionIndex, 1));
+    this.connectionService.createConnection(event);
   }
 
   protected reassignConnection(event: FReassignConnectionEvent): void {
-    if (
-      (!event.nextTargetId && !event.nextSourceId)
-      || this.cannotCreateConnection(
-        event.nextSourceId ?? event.previousSourceId,
-        event.nextTargetId ?? event.previousTargetId
-      )
-    ) {
-      return;
-    }
-    this.connections.update((link) => {
-      const connection = link.find(
-        (c) => c.source === event.previousSourceId && c.target === event.previousTargetId,
-      );
-      if (!connection) {
-        throw new Error('Connection not found');
-      }
-      connection.source = event.nextSourceId || connection.source;
-      connection.target = event.nextTargetId || connection.target;
-
-      return [...link];
-    });
+    this.connectionService.reassignConnection(event);
   }
 
   createTable(): void {
@@ -90,23 +57,5 @@ export class Sandbox {
         y: this.cursorCoords().y - canvasCoords.y
       });
     }
-  }
-
-  private cannotCreateConnection(source: string, target: string): boolean {
-    const targetName: string[] = target.split("_");
-    const sourceName: string[] = source.split("_");
-    return (sourceName[0] == targetName[0])
-      || this.connections().some(link => {
-        const linkSourceName: string[] = link.source.split("_");
-        const linkTargetName: string[] = link.target.split("_");
-        return (linkSourceName[0] == sourceName[0] && linkTargetName[0] == targetName[0])
-          || (linkSourceName[0] == targetName[0] && linkTargetName[0] == sourceName[0]);
-      });
-  }
-
-  private findConnectionIndex(source: string, target: string): number {
-    return this.connections().findIndex(connection =>
-      connection.source === source && connection.target === target
-    );
   }
 }

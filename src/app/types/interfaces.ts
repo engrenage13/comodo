@@ -1,13 +1,8 @@
-export enum eDataType {
-  String = "string",
-  Integer = "int",
-  Float = "float",
-  Blob = "blob",
-}
+import {EDataType, ERelationQuantity} from './enums';
 
-export interface iColumn {
+export interface IColumn {
   name: string;
-  type: eDataType;
+  type: EDataType;
   maxlength: string;
   commentary?: string;
   isPrimaryKey?: boolean;
@@ -16,14 +11,22 @@ export interface iColumn {
   order: number;
 }
 
-export interface iCoord {
+export interface IConnection {
+  id: string;
+  source: string;
+  target: string;
+  leftQuantity: ERelationQuantity;
+  rightQuantity: ERelationQuantity;
+}
+
+export interface ICoord {
   x: number;
   y: number;
 }
 
-export interface iTable {
+export interface ITable {
   id: number;
   title: string;
-  columns: iColumn[];
-  coords: iCoord;
+  columns: IColumn[];
+  coords: ICoord;
 }

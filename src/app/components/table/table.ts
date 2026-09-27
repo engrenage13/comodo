@@ -1,5 +1,5 @@
 import { Component, input, output } from '@angular/core';
-import { iTable } from '../../types/interfaces';
+import { ITable } from '../../types/interfaces';
 import { FFlowModule } from '@foblex/flow';
 
 @Component({
@@ -10,7 +10,7 @@ import { FFlowModule } from '@foblex/flow';
 })
 export class Table {
   // Inputs
-  content = input.required<iTable>();
+  content = input.required<ITable>();
   id = input.required<number>();
   disableOptions = input<boolean>(false);
 

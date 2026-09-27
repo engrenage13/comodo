@@ -1,6 +1,9 @@
-import {Component, computed, signal} from '@angular/core';
+import {Component, computed, effect, inject, input, linkedSignal} from '@angular/core';
 import {form, FormField} from '@angular/forms/signals';
 import {NgTemplateOutlet} from '@angular/common';
+import {ERelationQuantity} from '../../types/enums';
+import {IConnection} from '../../types/interfaces';
+import {Connection} from '../../services/connection';
 
 @Component({
   selector: 'div[connection-toolbar]',
@@ -12,9 +15,16 @@ import {NgTemplateOutlet} from '@angular/common';
   styleUrl: './connection-toolbar.scss',
 })
 export class ConnectionToolbar {
-  quantityModel = signal<IQuantityModel>({
-    left: ERelationQuantity.ZeroToOne,
-    right: ERelationQuantity.OneToMany,
+  private readonly connectionService: Connection = inject(Connection);
+
+  // Input
+  connectionData = input.required<IConnection>();
+
+  quantityModel = linkedSignal<IQuantityModel>(() => {
+    return {
+      left: this.connectionData().leftQuantity,
+      right: this.connectionData().rightQuantity,
+    };
   });
 
   quantityForm = form(this.quantityModel);
@@ -26,6 +36,16 @@ export class ConnectionToolbar {
   rightQuantity = computed<string>(() =>
     this.convertRelationQuantityToString(this.quantityModel().right)
   );
+
+  constructor() {
+    effect((): void => {
+      this.connectionService.changeQuantities(
+        this.connectionData().id,
+        this.quantityModel().left,
+        this.quantityModel().right
+      );
+    });
+  }
 
   private convertRelationQuantityToString(quantity: ERelationQuantity): string {
     switch(quantity) {
@@ -40,17 +60,16 @@ export class ConnectionToolbar {
     }
   }
 
+  remove(event: MouseEvent): void {
+    this.connectionService.deleteConnection(this.connectionData().id);
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
   protected readonly ERelationQuantity = ERelationQuantity;
 }
 
 export interface IQuantityModel {
   left: ERelationQuantity;
   right: ERelationQuantity;
-}
-
-export enum ERelationQuantity {
-  ZeroToOne = "zeroToOne",
-  OneToOne = "oneToOne",
-  ZeroToMany = "zeroToMany",
-  OneToMany = "oneToMany",
 }

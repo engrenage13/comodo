@@ -2,16 +2,19 @@
   <ng-container [ngTemplateOutlet]="quantitySelect" [ngTemplateOutletContext]="{rightSide: false}"></ng-container>
   <div>-</div>
   <ng-container [ngTemplateOutlet]="quantitySelect" [ngTemplateOutletContext]="{rightSide: true}"></ng-container>
+  <button title="Supprimer ce lien" (click)="remove($event)"><span class="material-symbols-rounded">close</span></button>
 </div>
 <div class="row gap-xs read-area">
   {{leftQuantity()}} - {{rightQuantity()}}
 </div>
 
 <ng-template #quantitySelect let-rightSide="rightSide">
-  <select [formField]="rightSide ? quantityForm.right : quantityForm.left">
-    <option [value]="ERelationQuantity.ZeroToOne">0..1</option>
-    <option [value]="ERelationQuantity.OneToOne">1..1</option>
-    <option [value]="ERelationQuantity.ZeroToMany">0..n</option>
-    <option [value]="ERelationQuantity.OneToMany">1..n</option>
-  </select>
+  <label>
+    <select [formField]="rightSide ? quantityForm.right : quantityForm.left">
+      <option [value]="ERelationQuantity.ZeroToOne">0..1</option>
+      <option [value]="ERelationQuantity.OneToOne">1..1</option>
+      <option [value]="ERelationQuantity.ZeroToMany">0..n</option>
+      <option [value]="ERelationQuantity.OneToMany">1..n</option>
+    </select>
+  </label>
 </ng-template>

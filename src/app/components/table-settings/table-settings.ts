@@ -1,6 +1,6 @@
 import { Component, computed, inject, input, linkedSignal, output, signal } from '@angular/core';
 import { SidePanel } from "../side-panel/side-panel";
-import { iColumn, iTable } from '../../types/interfaces';
+import { IColumn, ITable } from '../../types/interfaces';
 import { Table } from '../../services/table';
 import { form, required, FormField, disabled } from '@angular/forms/signals';
 import { ColumnForm } from "../column-form/column-form";
@@ -16,13 +16,13 @@ export class TableSettings {
   private readonly tableService = inject(Table);
 
   // Inputs
-  tableDatas = input.required<iTable>();
+  tableDatas = input.required<ITable>();
 
   // Outputs
   closePanel = output<void>();
 
   // Columns
-  columns = linkedSignal<{column: iColumn, invalid: boolean, checked?: boolean}[]>(() => 
+  columns = linkedSignal<{column: IColumn, invalid: boolean, checked?: boolean}[]>(() =>
     this.tableDatas().columns.map(column => {
       return {column, invalid: false};
     })
@@ -31,12 +31,12 @@ export class TableSettings {
   deleteColumnMode = signal<boolean>(false);
 
   // Form
-  tableModel = linkedSignal<iTable>(() => this.tableDatas());
+  tableModel = linkedSignal<ITable>(() => this.tableDatas());
   tableForm = form(this.tableModel, (schema) => {
     required(schema.title, {message: "La table doit avoir un nom."});
     disabled(schema.title, {when: () => this.deleteColumnMode()});
   });
-  isInvalid = computed(() => 
+  isInvalid = computed(() =>
     (this.tableForm().touched() && this.tableForm().invalid()) || this.hasInvalidColumn()
   );
 
@@ -51,15 +51,15 @@ export class TableSettings {
     this.closePanel.emit();
   }
 
-  drop(event: CdkDragDrop<iColumn[]>) {
+  drop(event: CdkDragDrop<IColumn[]>) {
     moveItemInArray(this.columns(), event.previousIndex, event.currentIndex);
   }
 
   saveTableModifications(): void {
     // Columns
-    const columns: iColumn[] = this.columns().map(column => column.column);
+    const columns: IColumn[] = this.columns().map(column => column.column);
     // Table
-    const table: iTable = {...this.tableModel(), columns};
+    const table: ITable = {...this.tableModel(), columns};
     this.tableService.updateTable(this.tableDatas().id, table);
     this.closePanel.emit();
   }
@@ -71,7 +71,7 @@ export class TableSettings {
     }
   }
 
-  updateColumnData(columnIndex: number, newColumnData: iColumn): void {
+  updateColumnData(columnIndex: number, newColumnData: IColumn): void {
     if (columnIndex > -1) {
       this.columns()[columnIndex].column = newColumnData;
     }

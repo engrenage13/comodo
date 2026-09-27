@@ -9,14 +9,14 @@
     <f-connection-for-create fType="segment" />
     <f-snap-connection [fSnapThreshold]="50" fType="segment" />
 
-    @for (connection of connections(); track $index) {
+    @for (connection of connections(); track connection.id) {
       <f-connection
         fType="segment"
         [fSourceId]="connection.source"
         [fTargetId]="connection.target"
         [fReassignableStart]="true"
       >
-        <div fConnectionContent connection-toolbar></div>
+        <div fConnectionContent connection-toolbar [connectionData]="connection"></div>
       </f-connection>
     }
 
@@ -38,7 +38,12 @@
 </f-flow>
 
 @if (!isSelector()) {
-  <div class="invisible-full" (click)="createTable()"></div>
+  <div
+    class="invisible-full"
+    (click)="createTable()"
+    (keydown.enter)="createTable()"
+    (keydown.space)="createTable()"
+  ></div>
 }
 
 <app-toolbar />

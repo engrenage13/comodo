@@ -1,7 +1,8 @@
 import { afterRenderEffect, Component, input, model, output } from '@angular/core';
-import { eDataType, iColumn } from '../../types/interfaces';
+import { IColumn } from '../../types/interfaces';
 import { form, required, FormField, disabled } from '@angular/forms/signals';
 import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { EDataType } from '../../types/enums';
 
 @Component({
   selector: 'app-column-form',
@@ -14,7 +15,7 @@ export class ColumnForm {
   checkBoxMode = input<boolean>(false);
 
   // Models
-  columnDatas = model.required<iColumn>();
+  columnDatas = model.required<IColumn>();
   checked = model<boolean>(false);
 
   // Output
@@ -24,8 +25,8 @@ export class ColumnForm {
   columnForm = form(this.columnDatas, (schema) => {
     required(schema.name, {message: "La colonne doit avoir un nom."});
     disabled(
-      schema.maxlength, 
-      {when: ({valueOf}) => valueOf(schema.type) != eDataType.String}
+      schema.maxlength,
+      {when: ({valueOf}) => valueOf(schema.type) != EDataType.String}
     );
   });
 
