@@ -24,6 +24,11 @@ export interface ICoord {
   y: number;
 }
 
+export interface IModel {
+  tables: ITable[];
+  connections: IConnection[];
+}
+
 export interface ITable {
   id: number;
   title: string;

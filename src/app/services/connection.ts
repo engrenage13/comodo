@@ -1,20 +1,22 @@
-import {Service, signal} from '@angular/core';
-import {IConnection} from '../types/interfaces';
+import {inject, Service, signal} from '@angular/core';
 import {FCreateConnectionEvent, FReassignConnectionEvent} from '@foblex/flow';
 import {ERelationQuantity} from '../types/enums';
+import {ModelService} from './model-service';
 
 @Service()
 export class Connection {
-  connections = signal<IConnection[]>([]);
-  private nextId: number = 1;
+  private readonly modelService: ModelService = inject(ModelService);
+
+  connections = this.modelService.connections;
+  private readonly nextId = signal<number>(1);
 
   private cannotCreateConnection(source: string, target: string): boolean {
-    const targetName: string[] = target.split("_");
-    const sourceName: string[] = source.split("_");
+    const targetName: string[] = target.split("@");
+    const sourceName: string[] = source.split("@");
     return (sourceName[0] == targetName[0])
       || this.connections().some(link => {
-        const linkSourceName: string[] = link.source.split("_");
-        const linkTargetName: string[] = link.target.split("_");
+        const linkSourceName: string[] = link.source.split("@");
+        const linkTargetName: string[] = link.target.split("@");
         return (linkSourceName[0] == sourceName[0] && linkTargetName[0] == targetName[0])
           || (linkSourceName[0] == targetName[0] && linkTargetName[0] == sourceName[0]);
       });
@@ -28,6 +30,7 @@ export class Connection {
         value[index].rightQuantity = right;
         return value;
       });
+      this.modelService.saveModel();
     }
   }
 
@@ -41,20 +44,22 @@ export class Connection {
       [...x,
         {
           id: this.nextId.toString(),
-          source: event.sourceId,
+          source,
           target,
           leftQuantity: ERelationQuantity.OneToMany,
           rightQuantity: ERelationQuantity.OneToOne
         }
       ]
     );
-    this.nextId++;
+    this.nextId.update(value => value++);
+    this.modelService.saveModel();
   }
 
   deleteConnection(connectionId: string): void {
     this.connections.update(value =>
       value.filter(connection => connection.id !== connectionId)
     );
+    this.modelService.saveModel();
   }
 
   reassignConnection(event: FReassignConnectionEvent): void {
@@ -67,17 +72,18 @@ export class Connection {
     ) {
       return;
     }
-    this.connections.update((link) => {
-      const connection = link.find(
+    this.connections.update(links => {
+      const connection = links.find(
         (c) => c.source === event.previousSourceId && c.target === event.previousTargetId,
       );
       if (!connection) {
         throw new Error('Connection not found');
       }
-      connection.source = event.nextSourceId || connection.source;
-      connection.target = event.nextTargetId || connection.target;
+      connection.source = event.nextSourceId ?? connection.source;
+      connection.target = event.nextTargetId ?? connection.target;
 
-      return [...link];
+      return [...links];
     });
+    this.modelService.saveModel();
   }
 }

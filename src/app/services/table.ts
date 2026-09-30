@@ -1,27 +1,13 @@
-import { Service, signal } from '@angular/core';
+import {inject, Service} from '@angular/core';
 import { IColumn, ICoord, ITable } from '../types/interfaces';
 import { EDataType } from '../types/enums';
+import {ModelService} from './model-service';
 
 @Service()
 export class Table {
-  tables = signal<ITable[]>([
-    {
-      id: 1,
-      title: "Table 1",
-      columns: [
-        this.generateEmptyColumn(),
-      ],
-      coords: {x: 32, y: 64}
-    },
-    {
-      id: 2,
-      title: "Table 2",
-      columns: [
-        this.generateEmptyColumn(),
-      ],
-      coords: {x: 200, y: 64}
-    }
-  ]);
+  private readonly modelService: ModelService = inject(ModelService);
+
+  tables = this.modelService.tables;
 
   // Table management
   createTable(coords: ICoord): void {
@@ -34,17 +20,20 @@ export class Table {
       };
       return [...value, newTable];
     });
+    this.modelService.saveModel();
   }
 
   updateTable(tableId: number, newTable: ITable): void {
     const index: number = this.tables().findIndex(table => table.id === tableId);
     if (index > -1) {
       this.tables()[index] = newTable;
+      this.modelService.saveModel();
     }
   }
 
   deleteTable(tableId: number): void {
     this.tables.update(value => value.filter(table => table.id != tableId));
+    this.modelService.saveModel();
   }
 
   // Column management

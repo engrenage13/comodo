@@ -25,7 +25,7 @@
       <tbody>
         @for (column of content().columns; track $index) {
           <tr [title]="column.isPrimaryKey ? 'Clé primaire' : ''">
-            <td fConnector [fConnectorId]="`t${id()}-${column.name}_1`"></td>
+            <td fConnector [fConnectorId]="`t${id()}-${column.name}@1`"></td>
             <td [class.empty]="!column.isPrimaryKey">
               @if (column.isPrimaryKey) {
                 <span class="material-symbols-rounded">vpn_key</span>
@@ -41,7 +41,7 @@
             <td class="description" [class.empty]="!column.isNotNull">
               {{column.isNotNull ? 'non null' : ''}}
             </td>
-            <td fConnector [fConnectorId]="`t${id()}-${column.name}_2`"></td>
+            <td fConnector [fConnectorId]="`t${id()}-${column.name}@2`"></td>
           </tr>
         }
       </tbody>
