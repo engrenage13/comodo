@@ -31,6 +31,14 @@ export class Table {
     }
   }
 
+  updateTableCoords(tableId: number, coords: ICoord): void {
+    const index: number = this.tables().findIndex(table => table.id === tableId);
+    if (index > -1) {
+      this.tables()[index].coords = coords;
+      this.modelService.saveModel();
+    }
+  }
+
   deleteTable(tableId: number): void {
     this.tables.update(value => value.filter(table => table.id != tableId));
     this.modelService.saveModel();

@@ -4,6 +4,7 @@
   [fNodePosition]="content().coords"
   [fNodeDraggingDisabled]="disableOptions()"
   [fAutoSizeToFitChildren]="true"
+  (fNodePositionChange)="updateCoords($event)"
 >
   <nav class="row right options-row">
     <button
@@ -47,10 +48,4 @@
       </tbody>
     </table>
   </div>
-  <!--<div
-    fConnector
-    fConnectorId="source-1"
-    fConnectorType="source"
-    fConnectorConnectableSide="right"
-  ></div>-->
 </div>

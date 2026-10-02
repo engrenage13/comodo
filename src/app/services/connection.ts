@@ -1,4 +1,4 @@
-import {inject, Service, signal} from '@angular/core';
+import {computed, inject, Service} from '@angular/core';
 import {FCreateConnectionEvent, FReassignConnectionEvent} from '@foblex/flow';
 import {ERelationQuantity} from '../types/enums';
 import {ModelService} from './model-service';
@@ -8,7 +8,14 @@ export class Connection {
   private readonly modelService: ModelService = inject(ModelService);
 
   connections = this.modelService.connections;
-  private readonly nextId = signal<number>(1);
+  private readonly nextId = computed<number>(() => {
+    const length: number = this.connections().length;
+    if (length > 0) {
+      return Number(this.connections()[length - 1].id) + 1;
+    } else {
+      return 1;
+    }
+  });
 
   private cannotCreateConnection(source: string, target: string): boolean {
     const targetName: string[] = target.split("@");
@@ -43,7 +50,7 @@ export class Connection {
     this.connections.update((x) =>
       [...x,
         {
-          id: this.nextId.toString(),
+          id: this.nextId().toString(),
           source,
           target,
           leftQuantity: ERelationQuantity.OneToMany,
@@ -51,7 +58,6 @@ export class Connection {
         }
       ]
     );
-    this.nextId.update(value => value++);
     this.modelService.saveModel();
   }
 
