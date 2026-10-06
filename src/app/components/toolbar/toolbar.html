@@ -1,20 +1,27 @@
 <div class="toolbar-foundation row center">
   <nav class="toolbar row">
-    <button 
-      (click)="setCursorMode(0)" 
-      class="icobutton" 
+    <button
+      (click)="setCursorMode(0)"
+      class="icobutton"
       [class.selected]="cursorMode() == 0"
       title="Sélection"
     >
       <span class="material-symbols-rounded">arrow_selector_tool</span>
     </button>
-    <button 
-      (click)="setCursorMode(1)" 
-      class="icobutton" 
+    <button
+      (click)="setCursorMode(1)"
+      class="icobutton"
       [class.selected]="cursorMode() == 1"
       title="Ajouter une table"
     >
       <span class="material-symbols-rounded">table</span>
+    </button>
+    <button
+      (click)="downloadFile()"
+      class="icobutton"
+      title="Télécharger le MCD"
+    >
+      <span class="material-symbols-rounded">download</span>
     </button>
   </nav>
 </div>

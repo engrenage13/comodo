@@ -25,12 +25,27 @@ export class ModelService {
     }
   }
 
-  saveModel(): void {
-    const model: IModel = {
+  downloadJsonModel(): void {
+    const model: IModel = this.generateModel();
+
+    const blob: Blob = new Blob([JSON.stringify(model, null, 2)], { type: "application/json" });
+    const url: string = window.URL.createObjectURL(blob);
+    const link: HTMLAnchorElement = document.createElement("a");
+    link.href = url;
+    link.download = "Mon MCD";
+    link.click();
+    window.URL.revokeObjectURL(url);
+  }
+
+  private generateModel(): IModel {
+    return {
       tables: this.tables(),
       connections: this.connections(),
     }
+  }
 
+  saveModel(): void {
+    const model: IModel = this.generateModel();
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(model));
   }
 }
