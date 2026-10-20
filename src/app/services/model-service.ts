@@ -1,8 +1,11 @@
 import {Service, signal} from '@angular/core';
-import {IConnection, IModel, ITable} from '../types/interfaces';
+import {EDataType, ERelationQuantity} from '../types/enums';
+import {IColumn, IConnection, ICoord, IModel, ITable} from '../types/interfaces';
 
 export const MODEL_TITLE_MAX_LENGTH = 80;
 const DEFAULT_TITLE = "Mon MCD";
+const DATA_TYPES = new Set<string>(Object.values(EDataType));
+const QUANTITIES = new Set<string>(Object.values(ERelationQuantity));
 
 @Service()
 export class ModelService {
@@ -10,27 +13,19 @@ export class ModelService {
 
   private readonly titleState = signal(DEFAULT_TITLE);
   readonly title = this.titleState.asReadonly();
+  readonly hasStoredModel = signal(false);
   connections = signal<IConnection[]>([]);
   tables = signal<ITable[]>([]);
 
   constructor() {
     const storedModel: string|null = localStorage.getItem(this.STORAGE_KEY);
-    if (storedModel) {
-      const model: IModel = JSON.parse(storedModel);
+    if (!storedModel) return;
 
-      if (typeof model.title === "string" && model.title.trim()) {
-        this.titleState.set(model.title.trim());
-      }
-
-      if (model.tables) {
-        this.tables.set(model.tables);
-      }
-
-      const connections: IConnection[] = model.connections;
-      if (connections) {
-        connections.sort((a, b) => Number(a.id) - Number(b.id));
-        this.connections.set(connections);
-      }
+    try {
+      const parsed: unknown = JSON.parse(storedModel);
+      if (isRecord(parsed)) this.restoreStored(parsed);
+    } catch {
+      return;
     }
   }
 
@@ -46,6 +41,33 @@ export class ModelService {
     window.URL.revokeObjectURL(url);
   }
 
+  loadFromText(text: string): void {
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(text);
+    } catch {
+      throw new Error("Ce fichier n'est pas un JSON valide.");
+    }
+    if (!isComodoModel(parsed)) {
+      throw new Error("Ce fichier ne contient pas un modèle Comodo.");
+    }
+
+    const title: string = parsed.title.trim().slice(0, MODEL_TITLE_MAX_LENGTH) || DEFAULT_TITLE;
+    const connections: IConnection[] = [...parsed.connections];
+    connections.sort((a, b) => Number(a.id) - Number(b.id));
+    this.titleState.set(title);
+    this.tables.set(parsed.tables);
+    this.connections.set(connections);
+    this.saveModel();
+  }
+
+  startNewModel(): void {
+    this.titleState.set(DEFAULT_TITLE);
+    this.tables.set([]);
+    this.connections.set([]);
+    this.saveModel();
+  }
+
   updateTitle(title: string): void {
     const nextTitle: string = title.trim();
     if (!nextTitle || nextTitle.length > MODEL_TITLE_MAX_LENGTH || nextTitle === this.title()) {
@@ -53,6 +75,12 @@ export class ModelService {
     }
     this.titleState.set(nextTitle);
     this.saveModel();
+  }
+
+  saveModel(): void {
+    const model: IModel = this.generateModel();
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(model));
+    this.hasStoredModel.set(true);
   }
 
   private downloadFileName(): string {
@@ -71,8 +99,89 @@ export class ModelService {
     }
   }
 
-  saveModel(): void {
-    const model: IModel = this.generateModel();
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(model));
+  private restoreStored(model: Record<string, unknown>): void {
+    const title: unknown = model["title"];
+    const tables: unknown = model["tables"];
+    const connections: unknown = model["connections"];
+    if (typeof title !== "string" && !Array.isArray(tables) && !Array.isArray(connections)) return;
+
+    if (typeof title === "string" && title.trim()) {
+      this.titleState.set(title.trim());
+    }
+    if (Array.isArray(tables)) {
+      this.tables.set(tables as ITable[]);
+    }
+    if (Array.isArray(connections)) {
+      const sorted: IConnection[] = [...connections] as IConnection[];
+      sorted.sort((a, b) => Number(a.id) - Number(b.id));
+      this.connections.set(sorted);
+    }
+    this.hasStoredModel.set(true);
   }
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function optionalBoolean(value: unknown): boolean {
+  return value === undefined || typeof value === "boolean";
+}
+
+function optionalString(value: unknown): boolean {
+  return value === undefined || typeof value === "string";
+}
+
+function isCoord(value: unknown): value is ICoord {
+  if (!isRecord(value)) return false;
+  const coord = value as Partial<ICoord>;
+  return typeof coord.x === "number" && Number.isFinite(coord.x)
+    && typeof coord.y === "number" && Number.isFinite(coord.y);
+}
+
+function isColumn(value: unknown): value is IColumn {
+  if (!isRecord(value)) return false;
+  const column = value as Partial<IColumn>;
+  return typeof column.name === "string"
+    && typeof column.type === "string"
+    && DATA_TYPES.has(column.type)
+    && typeof column.maxlength === "string"
+    && typeof column.order === "number"
+    && optionalString(column.commentary)
+    && optionalBoolean(column.isPrimaryKey)
+    && optionalBoolean(column.isUnique)
+    && optionalBoolean(column.isNotNull);
+}
+
+function isTable(value: unknown): value is ITable {
+  if (!isRecord(value)) return false;
+  const table = value as Partial<ITable>;
+  return typeof table.id === "number"
+    && Number.isInteger(table.id)
+    && typeof table.title === "string"
+    && Array.isArray(table.columns)
+    && table.columns.every(isColumn)
+    && isCoord(table.coords);
+}
+
+function isConnection(value: unknown): value is IConnection {
+  if (!isRecord(value)) return false;
+  const connection = value as Partial<IConnection>;
+  return typeof connection.id === "string"
+    && typeof connection.source === "string"
+    && typeof connection.target === "string"
+    && typeof connection.leftQuantity === "string"
+    && QUANTITIES.has(connection.leftQuantity)
+    && typeof connection.rightQuantity === "string"
+    && QUANTITIES.has(connection.rightQuantity);
+}
+
+function isComodoModel(value: unknown): value is IModel {
+  if (!isRecord(value)) return false;
+  const model = value as Partial<IModel>;
+  return typeof model.title === "string"
+    && Array.isArray(model.tables)
+    && model.tables.every(isTable)
+    && Array.isArray(model.connections)
+    && model.connections.every(isConnection);
 }

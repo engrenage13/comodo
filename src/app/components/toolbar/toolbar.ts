@@ -1,5 +1,5 @@
-import { Component, computed, inject, linkedSignal } from '@angular/core';
-import { form, FormField, maxLength, required, submit } from '@angular/forms/signals';
+import { afterNextRender, Component, computed, ElementRef, inject, linkedSignal, viewChild } from '@angular/core';
+import { form, FormField, maxLength, required } from '@angular/forms/signals';
 import { eCursorMode, Tools } from '../../services/tools';
 import { MODEL_TITLE_MAX_LENGTH, ModelService } from '../../services/model-service';
 
@@ -12,6 +12,14 @@ import { MODEL_TITLE_MAX_LENGTH, ModelService } from '../../services/model-servi
 export class Toolbar {
   private readonly toolsService: Tools = inject(Tools);
   private readonly modelService: ModelService = inject(ModelService);
+
+  private readonly selectionButton = viewChild<ElementRef<HTMLButtonElement>>('selectionButton');
+
+  constructor() {
+    afterNextRender(() => {
+      this.selectionButton()?.nativeElement.focus();
+    });
+  }
 
   cursorMode = this.toolsService.cursorMode;
 
@@ -36,9 +44,7 @@ export class Toolbar {
     if (trimmedTitle !== this.titleModel().title) {
       this.titleModel.set({title: trimmedTitle});
     }
-    void submit(this.titleForm, async () => {
-      this.modelService.updateTitle(this.titleModel().title);
-    });
+    this.modelService.updateTitle(this.titleModel().title);
   }
 
   setCursorMode(cursorMode: eCursorMode): void {
