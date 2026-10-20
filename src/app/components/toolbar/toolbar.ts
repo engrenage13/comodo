@@ -1,10 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, linkedSignal } from '@angular/core';
+import { form, FormField, maxLength, required, submit } from '@angular/forms/signals';
 import { eCursorMode, Tools } from '../../services/tools';
-import {ModelService} from '../../services/model-service';
+import { MODEL_TITLE_MAX_LENGTH, ModelService } from '../../services/model-service';
 
 @Component({
   selector: 'app-toolbar',
-  imports: [],
+  imports: [FormField],
   templateUrl: './toolbar.html',
   styleUrl: './toolbar.scss',
 })
@@ -14,8 +15,30 @@ export class Toolbar {
 
   cursorMode = this.toolsService.cursorMode;
 
+  private readonly titleModel = linkedSignal(() => ({title: this.modelService.title()}));
+  readonly titleForm = form(this.titleModel, (schema) => {
+    required(schema.title, {message: "Le modèle doit avoir un titre."});
+    maxLength(schema.title, MODEL_TITLE_MAX_LENGTH, {
+      message: `Le titre ne peut pas dépasser ${MODEL_TITLE_MAX_LENGTH} caractères.`,
+    });
+  });
+  readonly titleInvalid = computed(() =>
+    this.titleForm.title().touched() && this.titleForm.title().invalid()
+  );
+
   downloadFile(): void {
     this.modelService.downloadJsonModel();
+  }
+
+  saveTitle(event?: Event): void {
+    event?.preventDefault();
+    const trimmedTitle: string = this.titleModel().title.trim();
+    if (trimmedTitle !== this.titleModel().title) {
+      this.titleModel.set({title: trimmedTitle});
+    }
+    void submit(this.titleForm, async () => {
+      this.modelService.updateTitle(this.titleModel().title);
+    });
   }
 
   setCursorMode(cursorMode: eCursorMode): void {

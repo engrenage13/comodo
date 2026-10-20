@@ -25,6 +25,7 @@ export interface ICoord {
 }
 
 export interface IModel {
+  title: string;
   tables: ITable[];
   connections: IConnection[];
 }
