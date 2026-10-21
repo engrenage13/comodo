@@ -1,24 +1,6 @@
-<div class="toolbar-foundation">
-  <nav class="toolbar row">
-    <button
-      #selectionButton
-      (click)="setCursorMode(0)"
-      class="icobutton"
-      [class.selected]="cursorMode() == 0"
-      title="Sélection"
-    >
-      <span class="material-symbols-rounded">arrow_selector_tool</span>
-    </button>
-    <button
-      (click)="setCursorMode(1)"
-      class="icobutton"
-      [class.selected]="cursorMode() == 1"
-      title="Ajouter une table"
-    >
-      <span class="material-symbols-rounded">table</span>
-    </button>
-    <app-project-menu />
-  </nav>
+<div class="toolbar-foundation row gap-s">
+  <app-project-menu />
+
   <form class="model-title" (submit)="saveTitle($event)">
     <label for="model-title" class="visually-hidden">Titre du modèle</label>
     <input
@@ -39,4 +21,24 @@
       </ul>
     }
   </form>
+
+  <nav class="toolbar row">
+    <button
+      #selectionButton
+      (click)="setCursorMode(0)"
+      class="icobutton"
+      [class.selected]="cursorMode() == 0"
+      title="Sélection"
+    >
+      <span class="material-symbols-rounded">arrow_selector_tool</span>
+    </button>
+    <button
+      (click)="setCursorMode(1)"
+      class="icobutton"
+      [class.selected]="cursorMode() == 1"
+      title="Ajouter une table"
+    >
+      <span class="material-symbols-rounded">table</span>
+    </button>
+  </nav>
 </div>

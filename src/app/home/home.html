@@ -40,7 +40,7 @@
   </div>
 
   @if (confirmNew()) {
-    <div id="confirm-new" class="confirm" role="group" aria-labelledby="confirm-new-title">
+    <fieldset id="confirm-new" class="confirm" aria-labelledby="confirm-new-title">
       <p id="confirm-new-title" class="no-margin">
         Le modèle « {{ storedTitle() }} » enregistré dans ce navigateur sera remplacé.
       </p>
@@ -48,14 +48,14 @@
         <button type="button" class="ghost-button" (click)="cancelNew()" [disabled]="busy()">Annuler</button>
         <button #confirmButton type="button" class="button" (click)="createNewModel()" [disabled]="busy()">Créer le modèle</button>
       </div>
-    </div>
+    </fieldset>
   }
 
   @if (error()) {
     <p class="form-error" role="alert">{{ error() }}</p>
   }
 
-  <p class="visually-hidden" role="status">{{ busy() ? 'Ouverture du modèle.' : '' }}</p>
+  <output class="visually-hidden">{{ busy() ? 'Ouverture du modèle.' : '' }}</output>
 
   <input
     #fileInput

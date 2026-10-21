@@ -3,22 +3,26 @@ import {EDataType, ERelationQuantity} from '../types/enums';
 import {IColumn, IConnection, ICoord, IModel, ITable} from '../types/interfaces';
 
 export const MODEL_TITLE_MAX_LENGTH = 80;
-const DEFAULT_TITLE = "Mon MCD";
+const DEFAULT_TITLE: string = "Mon MCD";
+const STORAGE_KEY: string = "cmdModel";
 const DATA_TYPES = new Set<string>(Object.values(EDataType));
 const QUANTITIES = new Set<string>(Object.values(ERelationQuantity));
 
 @Service()
 export class ModelService {
-  private readonly STORAGE_KEY: string = "cmdModel";
-
   private readonly titleState = signal(DEFAULT_TITLE);
   readonly title = this.titleState.asReadonly();
   readonly hasStoredModel = signal(false);
   connections = signal<IConnection[]>([]);
   tables = signal<ITable[]>([]);
 
+  // File management
+  busy = signal<boolean>(false);
+  confirmNew = signal<boolean>(false);
+  error = signal<string | null>(null);
+
   constructor() {
-    const storedModel: string|null = localStorage.getItem(this.STORAGE_KEY);
+    const storedModel: string|null = localStorage.getItem(STORAGE_KEY);
     if (!storedModel) return;
 
     try {
@@ -27,6 +31,10 @@ export class ModelService {
     } catch {
       return;
     }
+  }
+
+  cancelNew(): void {
+    this.confirmNew.set(false);
   }
 
   downloadJsonModel(): void {
@@ -41,6 +49,22 @@ export class ModelService {
 
   jsonText(): string {
     return JSON.stringify(this.generateModel(), null, 2);
+  }
+
+  requestNew(): boolean {
+    this.error.set(null);
+    if (this.hasStoredModel()) {
+      this.confirmNew.set(true);
+      return false;
+    }
+    this.startNew();
+    return true;
+  }
+
+  startNew(): void {
+    this.confirmNew.set(false);
+    this.error.set(null);
+    this.startNewModel();
   }
 
   suggestedFileName(): string {
@@ -71,6 +95,18 @@ export class ModelService {
     this.saveModel();
   }
 
+  openFile(fileContent: string): void {
+    this.busy.set(true);
+    try {
+      this.loadFromText(fileContent);
+      this.error.set(null);
+    } catch (error: unknown) {
+      this.error.set((error as Error).message);
+    } finally {
+      this.busy.set(false);
+    }
+  }
+
   startNewModel(): void {
     this.titleState.set(DEFAULT_TITLE);
     this.tables.set([]);
@@ -89,7 +125,7 @@ export class ModelService {
 
   saveModel(): void {
     const model: IModel = this.generateModel();
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(model));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(model));
     this.hasStoredModel.set(true);
   }
 

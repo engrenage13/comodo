@@ -9,7 +9,6 @@ import {
   viewChild
 } from '@angular/core';
 import {ModelService} from '../services/model-service';
-import {Project} from '../services/project';
 
 @Component({
   selector: 'app-home',
@@ -20,8 +19,7 @@ import {Project} from '../services/project';
   },
 })
 export class Home {
-  private readonly modelService = inject(ModelService);
-  private readonly project = inject(Project);
+  private readonly modelService: ModelService = inject(ModelService);
 
   // Output
   quitHomePage = output<void>();
@@ -31,12 +29,11 @@ export class Home {
   private readonly confirmButton = viewChild<ElementRef<HTMLButtonElement>>('confirmButton');
   private readonly fileInput = viewChild<ElementRef<HTMLInputElement>>('fileInput');
 
-  readonly canRememberFiles = this.project.canRememberFiles;
   readonly hasStoredModel = this.modelService.hasStoredModel;
   readonly storedTitle = this.modelService.title;
-  readonly confirmNew = this.project.confirmNew;
-  readonly busy = this.project.busy;
-  readonly error = this.project.error;
+  readonly confirmNew = this.modelService.confirmNew;
+  readonly busy = this.modelService.busy;
+  readonly error = this.modelService.error;
   readonly storedDetails = computed(() => {
     const count: number = this.modelService.tables().length;
     const tables: string = count === 1 ? "1 table" : `${count} tables`;
@@ -53,12 +50,17 @@ export class Home {
   }
 
   cancelNew(): void {
-    this.project.cancelNew();
+    this.modelService.cancelNew();
+  }
+
+  close(): void {
+    this.error.set(null);
+    this.quitHomePage.emit();
   }
 
   createNewModel(): void {
-    this.project.startNew();
-    this.quitHomePage.emit();
+    this.modelService.startNew();
+    this.close();
   }
 
   onFileSelected(event: Event): void {
@@ -70,35 +72,28 @@ export class Home {
     void this.importFile(file);
   }
 
-  async openFromComputer(): Promise<void> {
-    if (!this.canRememberFiles) {
-      this.fileInput()?.nativeElement.click();
-      return;
-    }
-
-    try {
-      const opened: boolean = await this.project.openFromPicker();
-      if (opened) this.quitHomePage.emit();
-    } catch {
-      return;
-    }
+  openFromComputer(): void {
+    this.fileInput()?.nativeElement.click();
   }
 
   requestNewModel(): void {
-    if (this.project.requestNew()) this.quitHomePage.emit();
+    if (this.modelService.requestNew()) this.close();
   }
 
   resume(): void {
-    this.project.cancelNew();
-    this.quitHomePage.emit();
+    this.modelService.cancelNew();
+    this.close();
   }
 
   private async importFile(file: File): Promise<void> {
     try {
-      await this.project.openText(await file.text());
-      this.quitHomePage.emit();
+      this.modelService.openFile(await file.text());
     } catch {
       return;
+    } finally {
+      if (!this.error()) {
+        this.close();
+      }
     }
   }
 }

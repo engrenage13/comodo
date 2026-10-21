@@ -1,5 +1,5 @@
 import {Component, ElementRef, inject, signal, viewChild, viewChildren} from '@angular/core';
-import {Project} from '../../services/project';
+import {ModelService} from '../../services/model-service';
 
 @Component({
   selector: 'app-project-menu',
@@ -11,7 +11,7 @@ import {Project} from '../../services/project';
   },
 })
 export class ProjectMenu {
-  readonly project: Project = inject(Project);
+  private readonly modelService: ModelService = inject(ModelService);
 
   private readonly projectRoot = viewChild<ElementRef<HTMLElement>>('projectRoot');
   private readonly projectButton = viewChild<ElementRef<HTMLButtonElement>>('projectButton');
@@ -21,18 +21,24 @@ export class ProjectMenu {
 
   readonly menuOpen = signal(false);
 
+  // File management
+  busy = this.modelService.busy;
+  confirmNew = this.modelService.confirmNew;
+  error = this.modelService.error;
+  title = this.modelService.title;
+
   cancelConfirm(): void {
-    this.project.cancelNew();
+    this.modelService.cancelNew();
     setTimeout(() => this.focusFirstItem());
   }
 
   closeMenu(): void {
     this.menuOpen.set(false);
-    this.project.cancelNew();
+    this.modelService.cancelNew();
   }
 
   confirmCreate(): void {
-    this.project.startNew();
+    this.modelService.startNew();
     this.menuOpen.set(false);
   }
 
@@ -45,8 +51,8 @@ export class ProjectMenu {
 
   onEscape(): void {
     if (!this.menuOpen()) return;
-    if (this.project.confirmNew()) {
-      this.project.cancelNew();
+    if (this.confirmNew()) {
+      this.modelService.cancelNew();
       setTimeout(() => this.focusFirstItem());
       return;
     }
@@ -82,43 +88,29 @@ export class ProjectMenu {
     }
   }
 
-  async openProject(): Promise<void> {
-    if (!this.project.canRememberFiles) {
-      this.fileInput()?.nativeElement.click();
-      this.closeMenu();
-      return;
-    }
+  openProject(): void {
+    this.fileInput()?.nativeElement.click();
     this.menuOpen.set(false);
-    try {
-      await this.project.openFromPicker();
-    } catch {
-      return;
-    }
   }
 
   requestNew(): void {
-    if (this.project.requestNew()) {
+    if (this.modelService.requestNew()) {
       this.menuOpen.set(false);
       return;
     }
     setTimeout(() => this.confirmButton()?.nativeElement.focus());
   }
 
-  async save(): Promise<void> {
+  saveAs(): void {
     this.menuOpen.set(false);
-    await this.project.save();
-  }
-
-  async saveAs(): Promise<void> {
-    this.menuOpen.set(false);
-    await this.project.saveAs();
+    this.modelService.downloadJsonModel();
   }
 
   toggleMenu(): void {
     const open: boolean = !this.menuOpen();
     this.menuOpen.set(open);
     if (!open) {
-      this.project.cancelNew();
+      this.modelService.cancelNew();
       return;
     }
     setTimeout(() => this.focusFirstItem());
@@ -126,14 +118,14 @@ export class ProjectMenu {
 
   private async importFile(file: File): Promise<void> {
     try {
-      await this.project.openText(await file.text());
+      this.modelService.openFile(await file.text());
     } catch {
       return;
     }
   }
 
   private focusFirstItem(): void {
-    if (!this.menuOpen() || this.project.confirmNew()) return;
+    if (!this.menuOpen() || this.confirmNew()) return;
     this.menuItems()[0]?.nativeElement.focus();
   }
 }
