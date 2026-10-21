@@ -30,15 +30,25 @@ export class ModelService {
   }
 
   downloadJsonModel(): void {
-    const model: IModel = this.generateModel();
-
-    const blob: Blob = new Blob([JSON.stringify(model, null, 2)], { type: "application/json" });
+    const blob: Blob = new Blob([this.jsonText()], { type: "application/json" });
     const url: string = window.URL.createObjectURL(blob);
     const link: HTMLAnchorElement = document.createElement("a");
     link.href = url;
-    link.download = this.downloadFileName();
+    link.download = this.suggestedFileName();
     link.click();
     window.URL.revokeObjectURL(url);
+  }
+
+  jsonText(): string {
+    return JSON.stringify(this.generateModel(), null, 2);
+  }
+
+  suggestedFileName(): string {
+    const sanitized: string = this.title()
+      .replace(/[\\/:*?"<>|]/g, "")
+      .replace(/[\u0000-\u001f]/g, "")
+      .trim();
+    return `${sanitized || DEFAULT_TITLE}.json`;
   }
 
   loadFromText(text: string): void {
@@ -81,14 +91,6 @@ export class ModelService {
     const model: IModel = this.generateModel();
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(model));
     this.hasStoredModel.set(true);
-  }
-
-  private downloadFileName(): string {
-    const sanitized: string = this.title()
-      .replace(/[\\/:*?"<>|]/g, "")
-      .replace(/[\u0000-\u001f]/g, "")
-      .trim();
-    return `${sanitized || DEFAULT_TITLE}.json`;
   }
 
   private generateModel(): IModel {

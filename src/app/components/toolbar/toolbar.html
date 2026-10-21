@@ -17,13 +17,7 @@
     >
       <span class="material-symbols-rounded">table</span>
     </button>
-    <button
-      (click)="downloadFile()"
-      class="icobutton"
-      title="Télécharger le MCD"
-    >
-      <span class="material-symbols-rounded">download</span>
-    </button>
+    <app-project-menu />
   </nav>
   <form class="model-title" (submit)="saveTitle($event)">
     <label for="model-title" class="visually-hidden">Titre du modèle</label>

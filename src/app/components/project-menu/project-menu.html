@@ -1,0 +1,85 @@
+<div class="project" #projectRoot>
+  <button
+    #projectButton
+    type="button"
+    class="icobutton"
+    title="Projet"
+    aria-label="Projet"
+    aria-haspopup="menu"
+    [class.selected]="menuOpen()"
+    [attr.aria-expanded]="menuOpen()"
+    [attr.aria-controls]="menuOpen() && !project.confirmNew() ? 'project-menu' : null"
+    [disabled]="project.busy()"
+    (click)="toggleMenu()"
+  >
+    <span class="material-symbols-rounded" aria-hidden="true">folder</span>
+  </button>
+
+  @if (menuOpen()) {
+    @if (project.confirmNew()) {
+      <div class="menu" role="group" aria-labelledby="project-confirm-title">
+        <p id="project-confirm-title" class="confirm-text">
+          Le modèle « {{ project.title() }} » enregistré dans ce navigateur sera remplacé.
+        </p>
+        <div class="row gap-xs">
+          <button type="button" class="ghost-button" (click)="cancelConfirm()" [disabled]="project.busy()">Annuler</button>
+          <button
+            #confirmButton
+            type="button"
+            class="button"
+            (click)="confirmCreate()"
+            [disabled]="project.busy()"
+          >
+            Créer le modèle
+          </button>
+        </div>
+      </div>
+    } @else {
+      <div id="project-menu" class="menu" role="menu" (keydown)="onMenuKeydown($event)">
+        <button #menuItem type="button" class="menu-item" role="menuitem" (click)="requestNew()" [disabled]="project.busy()">
+          <span class="material-symbols-rounded" aria-hidden="true">note_add</span>
+          Nouveau projet
+        </button>
+        <button #menuItem type="button" class="menu-item" role="menuitem" (click)="openProject()" [disabled]="project.busy()">
+          <span class="material-symbols-rounded" aria-hidden="true">folder_open</span>
+          Ouvrir un projet
+        </button>
+        <div class="menu-save">
+          @if (project.hasLocation()) {
+            <button
+              #menuItem
+              type="button"
+              class="menu-item"
+              role="menuitem"
+              [title]="'Enregistrer dans ' + project.locationName()"
+              (click)="save()"
+              [disabled]="project.busy()"
+            >
+              <span class="material-symbols-rounded" aria-hidden="true">save</span>
+              Enregistrer
+            </button>
+          }
+          <button #menuItem type="button" class="menu-item" role="menuitem" (click)="saveAs()" [disabled]="project.busy()">
+            <span class="material-symbols-rounded" aria-hidden="true">save_as</span>
+            Enregistrer sous
+          </button>
+        </div>
+      </div>
+    }
+  }
+
+  @if (!menuOpen() && project.error()) {
+    <p class="message form-error" role="alert">{{ project.error() }}</p>
+  } @else if (!menuOpen() && project.status()) {
+    <p class="message" role="status">{{ project.status() }}</p>
+  }
+
+  <input
+    #fileInput
+    type="file"
+    accept=".json,application/json"
+    hidden
+    tabindex="-1"
+    (change)="onFileSelected($event)"
+  />
+</div>

@@ -1,11 +1,12 @@
 import { afterNextRender, Component, computed, ElementRef, inject, linkedSignal, viewChild } from '@angular/core';
 import { form, FormField, maxLength, required } from '@angular/forms/signals';
+import { ProjectMenu } from '../project-menu/project-menu';
 import { eCursorMode, Tools } from '../../services/tools';
 import { MODEL_TITLE_MAX_LENGTH, ModelService } from '../../services/model-service';
 
 @Component({
   selector: 'app-toolbar',
-  imports: [FormField],
+  imports: [FormField, ProjectMenu],
   templateUrl: './toolbar.html',
   styleUrl: './toolbar.scss',
 })
@@ -33,10 +34,6 @@ export class Toolbar {
   readonly titleInvalid = computed(() =>
     this.titleForm.title().touched() && this.titleForm.title().invalid()
   );
-
-  downloadFile(): void {
-    this.modelService.downloadJsonModel();
-  }
 
   saveTitle(event?: Event): void {
     event?.preventDefault();
