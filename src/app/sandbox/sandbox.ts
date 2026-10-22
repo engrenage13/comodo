@@ -1,5 +1,12 @@
 import {Component, computed, inject, signal, viewChild} from '@angular/core';
-import {F_CANVAS, FCreateConnectionEvent, FFlowModule, FReassignConnectionEvent} from '@foblex/flow';
+import {
+  F_CANVAS,
+  FCreateConnectionEvent,
+  FFlowModule,
+  FReassignConnectionEvent, IFStateConnection,
+  IFStateNode,
+  injectFlowState
+} from '@foblex/flow';
 import { Toolbar } from '../components/toolbar/toolbar';
 import { Table as TableService } from '../services/table';
 import { Table } from "../components/table/table";
@@ -57,5 +64,9 @@ export class Sandbox {
         y: this.cursorCoords().y - canvasCoords.y
       });
     }
+  }
+
+  onLoaded(): void {
+    this.canvas()?.resetScale();
   }
 }

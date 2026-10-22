@@ -77,6 +77,10 @@
   }
 }
 
+.small {
+  font-size: 1rem;
+}
+
 .description {
   font-style: italic;
 }
@@ -85,6 +89,12 @@
 }
 
 // Connectors
-.f-connector {
-  display: block;
+.connector-left, .connector-right {
+  margin-top: 3px;
+}
+.connector-left {
+  left: -10px;
+}
+.connector-right {
+  right: -10px;
 }

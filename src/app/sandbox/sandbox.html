@@ -3,6 +3,7 @@
   [fDraggableDisabled]="!isSelector()"
   (fCreateConnection)="createConnection($event)"
   (fReassignConnection)="reassignConnection($event)"
+  (fFullRendered)="onLoaded()"
 >
   <f-selection-area />
   <f-canvas fZoom>
