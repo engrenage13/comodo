@@ -2,7 +2,7 @@
   <ng-container [ngTemplateOutlet]="quantitySelect" [ngTemplateOutletContext]="{rightSide: false}"></ng-container>
   <div>-</div>
   <ng-container [ngTemplateOutlet]="quantitySelect" [ngTemplateOutletContext]="{rightSide: true}"></ng-container>
-  <button title="Supprimer ce lien" (click)="remove($event)"><span class="material-symbols-rounded">close</span></button>
+  <button title="Supprimer ce lien" (click)="remove($event)"><span class="material-symbols-rounded">ink_eraser</span></button>
 </div>
 <div class="row gap-xs read-area">
   {{leftQuantity()}} - {{rightQuantity()}}

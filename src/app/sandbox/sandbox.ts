@@ -1,11 +1,10 @@
 import {Component, computed, inject, signal, viewChild} from '@angular/core';
 import {
+  EFCanvasLayer,
   F_CANVAS,
   FCreateConnectionEvent,
   FFlowModule,
-  FReassignConnectionEvent, IFStateConnection,
-  IFStateNode,
-  injectFlowState
+  FReassignConnectionEvent, provideFFlow, withA11y, withConnectionFlow, withFCanvas, withReflowOnResize
 } from '@foblex/flow';
 import { Toolbar } from '../components/toolbar/toolbar';
 import { Table as TableService } from '../services/table';
@@ -22,6 +21,16 @@ import {Connection} from '../services/connection';
   imports: [FFlowModule, Toolbar, Table, TableSettings, ConnectionToolbar],
   templateUrl: './sandbox.html',
   styleUrl: './sandbox.scss',
+  providers: [provideFFlow(
+    withConnectionFlow('click'),
+    withFCanvas({
+      layers: [EFCanvasLayer.GROUPS, EFCanvasLayer.NODES, EFCanvasLayer.CONNECTIONS],
+    }),
+    withA11y({
+      moveStep: 20,
+    }),
+    withReflowOnResize()
+  )],
 })
 export class Sandbox {
   private readonly tableService: TableService = inject(TableService);

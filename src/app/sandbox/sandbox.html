@@ -5,6 +5,8 @@
   (fReassignConnection)="reassignConnection($event)"
   (fFullRendered)="onLoaded()"
 >
+  <f-auto-pan [fEdgeThreshold]="20" [fSpeed]="8" [fAcceleration]="true" />
+  <f-magnetic-lines [threshold]="40" />
   <f-selection-area />
   <f-canvas fZoom>
     <f-connection-for-create fType="segment" />

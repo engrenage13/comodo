@@ -6,6 +6,7 @@
   [fNodeDraggingDisabled]="disableOptions()"
   [fAutoSizeToFitChildren]="true"
   (fNodePositionChange)="updateCoords($event)"
+  [attr.aria-label]="content().title"
 >
   <div class="column table-content">
     <div class="row between gap-s">
