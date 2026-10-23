@@ -9,6 +9,7 @@ import {
   viewChild
 } from '@angular/core';
 import {ModelService} from '../services/model-service';
+import {AccordPipe} from '../pipes/accord-pipe';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +18,9 @@ import {ModelService} from '../services/model-service';
   host: {
     '(keydown.escape)': 'cancelNew()',
   },
+  imports: [
+    AccordPipe
+  ]
 })
 export class Home {
   private readonly modelService: ModelService = inject(ModelService);
@@ -34,11 +38,7 @@ export class Home {
   readonly confirmNew = this.modelService.confirmNew;
   readonly busy = this.modelService.busy;
   readonly error = this.modelService.error;
-  readonly storedDetails = computed(() => {
-    const count: number = this.modelService.tables().length;
-    const tables: string = count === 1 ? "1 table" : `${count} tables`;
-    return `Enregistré dans ce navigateur · ${tables}`;
-  });
+  tablesCount = computed<number>(() => this.modelService.tables().length);
 
   constructor() {
     afterNextRender(() => {

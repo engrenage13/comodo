@@ -1,7 +1,7 @@
 @use "../../../styles.scss";
 
 .f-node {
-  @extend .column;
+  @extend .m-column;
 
   padding: .2rem 0;
   background: #ffffff;

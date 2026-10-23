@@ -1,42 +1,42 @@
-<main class="panel" [attr.aria-busy]="busy()">
-  <header class="intro">
-    <h1 #heading class="brand" tabindex="-1">Comodo</h1>
-    <p class="subtitle">Choisissez un modèle pour commencer.</p>
-  </header>
+<main [attr.aria-busy]="busy()" class="m-column m-center extra-gap">
+  <h1 #heading class="local-title">Comodo</h1>
 
-  <div class="choices">
+  <div class="m-column m-gap">
     @if (hasStoredModel()) {
-      <button type="button" class="choice choice-primary" (click)="resume()" [disabled]="busy()">
-        <span class="material-symbols-rounded choice-icon" aria-hidden="true">history</span>
-        <span class="choice-copy">
-          <span class="choice-title">Reprendre « {{ storedTitle() }} »</span>
-          <span class="choice-detail">{{ storedDetails() }}</span>
+      <button class="m-button extended-button" (click)="resume()" [disabled]="busy()">
+        <span class="material-symbols-rounded icon" aria-hidden="true">history</span>
+        <span class="m-column m-up">
+          <span class="m-heading-l inline">Reprendre « {{ storedTitle() }} »</span>
+          <span class="m-description m-row m-gap-xs desc">
+            {{`${tablesCount()} table` | accord:tablesCount()}}
+            enregistrées dans ce navigateur
+          </span>
         </span>
       </button>
     }
 
-    <button
-      type="button"
-      class="choice"
-      (click)="requestNewModel()"
-      [disabled]="busy()"
-      [attr.aria-expanded]="confirmNew()"
-      [attr.aria-controls]="confirmNew() ? 'confirm-new' : null"
-    >
-      <span class="material-symbols-rounded choice-icon" aria-hidden="true">note_add</span>
-      <span class="choice-copy">
-        <span class="choice-title">Nouveau modèle</span>
-        <span class="choice-detail">Partir d'un modèle vide</span>
-      </span>
-    </button>
+    <div class="m-row m-gap-l">
+      <button
+        class="m-ghost-button extended-button m-column m-grow"
+        (click)="requestNewModel()"
+        [disabled]="busy()"
+        [attr.aria-expanded]="confirmNew()"
+        [attr.aria-controls]="confirmNew() ? 'confirm-new' : null"
+      >
+        <span class="material-symbols-rounded icon" aria-hidden="true">note_add</span>
+        <span>Nouveau modèle</span>
+      </button>
 
-    <button type="button" class="choice" (click)="openFromComputer()" [disabled]="busy()">
-      <span class="material-symbols-rounded choice-icon" aria-hidden="true">folder_open</span>
-      <span class="choice-copy">
-        <span class="choice-title">Ouvrir un fichier</span>
-        <span class="choice-detail">Chercher un fichier JSON sur cet ordinateur</span>
-      </span>
-    </button>
+      <button
+        class="m-ghost-button extended-button m-column m-grow"
+        (click)="openFromComputer()"
+        [disabled]="busy()"
+        title="Cherchez un fichier JSON sur votre appareil"
+      >
+        <span class="material-symbols-rounded icon" aria-hidden="true">folder_open</span>
+        <span>Ouvrir un fichier</span>
+      </button>
+    </div>
   </div>
 
   @if (confirmNew()) {

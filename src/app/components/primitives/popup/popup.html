@@ -1,0 +1,38 @@
+<div class="m-popup-fondation m-center">
+  @if (isShown()) {
+    <div
+      class="m-shadow"
+      (click)="isShown.set(false)"
+      (keydown.esc)="isShown.set(false)"
+      animate.leave="m-shadow-animation-transparent"
+    ></div>
+
+    <dialog
+      class="m-popup"
+      [style.min-width]="minWidth()"
+      animate.enter="m-anim-from-bottom"
+      animate.leave="m-anim-to-bottom"
+      [open]="isShown()"
+      aria-modal="true"
+      aria-labelledby="popup-title"
+    >
+      <!-- Header -->
+      <div class="m-popup-header">
+        <p id="popup-title" class="m-heading-l">{{windowTitle()}}</p>
+        <!-- Boutons -->
+        <button
+          (click)="isShown.set(false)"
+          class="m-ghost-button m-critical m-ico-button m-reversed"
+          title="Fermer la fenêtre"
+        >
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <!-- Content -->
+      <div class="m-popup-content">
+        <ng-content />
+      </div>
+    </dialog>
+  }
+</div>

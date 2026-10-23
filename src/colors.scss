@@ -1,0 +1,56 @@
+// Themes Colors Variations
+@mixin emerald() {
+  --m-color-main: #0a7c0c;
+  --m-color-main-fade: color-mix(in srgb, var(--m-color-main) 90%, white);
+
+  --m-color-info: #0a4d91;
+  --m-color-success: #782691;
+  --m-color-critical: #BC0000;
+}
+.emerald {
+  @include emerald();
+}
+@mixin glace() {
+  --m-color-main: #2259b3;
+  --m-color-main-fade: color-mix(in srgb, var(--m-color-main) 90%, white);
+
+  --m-color-info: #0a7291;
+  --m-color-success: #04701c;
+  --m-color-critical: #BC0000;
+}
+.glace {
+  @include glace();
+}
+@mixin legacy() {
+  --m-color-main: #02657a;
+  --m-color-main-fade: color-mix(in srgb, var(--m-color-main) 90%, white);
+
+  --m-color-info: #0a4d91;
+  --m-color-success: #04701c;
+  --m-color-critical: #BC0000;
+}
+.legacy {
+  @include legacy();
+}
+@mixin peach() {
+  --m-color-main: #ae463e;
+  --m-color-main-fade: color-mix(in srgb, var(--m-color-main) 90%, white);
+
+  --m-color-info: #0a7291;
+  --m-color-success: #04701c;
+  --m-color-critical: #c30b0b;
+}
+.peach {
+  @include peach();
+}
+@mixin pink() {
+  --m-color-main: #8621ae;
+  --m-color-main-fade: color-mix(in srgb, var(--m-color-main) 90%, white);
+
+  --m-color-info: #0a4d91;
+  --m-color-success: #04701c;
+  --m-color-critical: #BC0000;
+}
+.pink {
+  @include pink();
+}

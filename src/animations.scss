@@ -1,0 +1,119 @@
+@keyframes accordion-slide {
+  50% {
+    transform: scaleX(200%) translateX(500%);
+
+  }
+  to {
+    transform: translateX(600%);
+  }
+}
+@keyframes fade {
+  to {
+    opacity: 0;
+    scale: 0;
+  }
+}
+@keyframes from-bottom {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  85% {
+    opacity: 1;
+    transform: translateY(-20px);
+  }
+}
+@keyframes from-left {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  85% {
+    opacity: 1;
+    transform: translateX(20px);
+  }
+}
+@keyframes from-right {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  85% {
+    opacity: 1;
+    transform: translateX(-20px);
+  }
+}
+@keyframes from-top {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  85% {
+    opacity: 1;
+    transform: translateY(-20px);
+  }
+}
+@keyframes pop {
+  from {
+    opacity: 0;
+    scale: 1;
+  }
+  85% {
+    opacity: 1;
+    scale: 1.1;
+  }
+}
+@keyframes rotate {
+  100% {
+    transform: rotate(1turn)
+  }
+}
+@keyframes slide-to-right {
+  0% {
+    background-position: right
+  }
+}
+@keyframes smooth-list-close {
+  100% {
+    max-height: 0;
+    opacity: 0;
+  }
+}
+@keyframes smooth-list-open {
+  0% {
+    max-height: 0;
+    opacity: 0;
+  }
+  16.7% {
+    opacity: 1;
+  }
+}
+@keyframes to-bottom {
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+@keyframes to-left {
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+@keyframes to-right {
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+@keyframes to-top {
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+@keyframes transparent {
+  to {
+    opacity: 0;
+  }
+}

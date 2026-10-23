@@ -1,119 +1,35 @@
 :host {
   display: flex;
-  min-height: 100vh;
-  box-sizing: border-box;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem;
-  background: var(--color-background-fade);
 }
 
-.panel {
+main {
   width: min(100%, 34rem);
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
+  height: 100vh;
   box-sizing: border-box;
   padding: 1.5rem;
-  background: var(--color-background);
-  border: 1px solid #707073;
-  border-radius: .7rem;
-  box-shadow: 0 1px 2px #000000;
 }
 
-.intro {
-  display: flex;
-  flex-direction: column;
-  gap: .25rem;
+.desc, .inline {
+  text-wrap: nowrap;
 }
-
-.brand {
-  margin: 0;
-  font-size: 2rem;
-  line-height: 1.1;
+.desc {
+  padding-bottom: .3rem;
 }
-
-.brand:focus {
-  outline: none;
+.extended-button {
+  height: unset;
 }
-
-.subtitle,
-.hint {
-  margin: 0;
-  color: #4d4d4d;
+.extra-gap {
+  gap: 6rem;
 }
-
-.choices,
-.shortcut-list {
-  display: flex;
-  flex-direction: column;
-  gap: .75rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.icon {
+  font-size: 5rem;
 }
-
-.choice {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: .8rem;
-  text-align: left;
-  font: inherit;
-  color: inherit;
-  background: var(--color-background);
-  border: 1px solid #707073;
-  border-radius: .7rem;
-  cursor: pointer;
-  padding: .9rem 1rem;
-
-  &:hover,
-  &:focus-visible {
-    border-color: var(--color-main);
-    outline: 2px solid var(--color-main);
-    outline-offset: 2px;
-  }
-
-  &:disabled {
-    cursor: not-allowed;
-    opacity: .65;
-  }
-}
-
-.choice-primary {
-  background: var(--color-main);
-  color: white;
-  border-color: var(--color-main);
-
-  &:hover,
-  &:focus-visible {
-    background: var(--color-main-fade);
-  }
-}
-
-.choice-icon {
-  flex: 0 0 auto;
-  font-size: 1.6rem;
-}
-
-.choice-copy {
-  display: flex;
-  flex-direction: column;
-  gap: .15rem;
-  min-width: 0;
-}
-
-.choice-title,
-.shortcut-name {
-  overflow-wrap: anywhere;
-}
-
-.choice-title {
-  font-weight: 600;
-}
-
-.choice-detail {
-  font-size: .9rem;
+.local-title {
+  font-size: 6.5rem;
+  font-weight: 400;
+  line-height: unset;
 }
 
 .confirm {
