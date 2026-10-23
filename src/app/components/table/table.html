@@ -1,35 +1,45 @@
 <div
   fNode
+  fDragHandle
   [fNodeId]="id()"
   [fNodePosition]="content().coords"
   [fNodeDraggingDisabled]="disableOptions()"
   [fAutoSizeToFitChildren]="true"
   (fNodePositionChange)="updateCoords($event)"
+  [attr.aria-label]="content().title"
 >
-  <nav class="row right options-row">
-    <button
-    class="ico-button classic"
-    title="Modifier la table"
-    (click)="edit.emit()"
-    [disabled]="disableOptions()"
-    >
-      <span class="material-symbols-rounded">table_edit</span>
-    </button>
-    <button class="ico-button" fDragHandle title="Déplacer la table" [disabled]="disableOptions()">
-      <span class="material-symbols-rounded">drag_pan</span>
-    </button>
-  </nav>
   <div class="column table-content">
-    <p class="table-title">{{content().title}}</p>
+    <div class="row between gap-s">
+      <p class="table-title">{{content().title}}</p>
+
+      <div class="row right options-row">
+        <button
+          class="ico-button classic"
+          title="Modifier la table"
+          (click)="edit.emit()"
+          [disabled]="disableOptions()"
+        >
+          <span class="material-symbols-rounded">settings</span>
+        </button>
+      </div>
+    </div>
 
     <table class="column-table">
+      <thead>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </thead>
       <tbody>
         @for (column of content().columns; track $index) {
           <tr [title]="column.isPrimaryKey ? 'Clé primaire' : ''">
-            <td fConnector [fConnectorId]="`t${id()}-${column.name}@1`"></td>
+            <td fConnector [fConnectorId]="`t${id()}-${column.name}@1`" class="connector-left"></td>
             <td [class.empty]="!column.isPrimaryKey">
               @if (column.isPrimaryKey) {
-                <span class="material-symbols-rounded">vpn_key</span>
+                <span class="material-symbols-rounded small">vpn_key</span>
               }
             </td>
             <td [class.underline]="column.isUnique">{{column.name}}</td>
@@ -42,7 +52,7 @@
             <td class="description" [class.empty]="!column.isNotNull">
               {{column.isNotNull ? 'non null' : ''}}
             </td>
-            <td fConnector [fConnectorId]="`t${id()}-${column.name}@2`"></td>
+            <td fConnector [fConnectorId]="`t${id()}-${column.name}@2`" class="connector-right"></td>
           </tr>
         }
       </tbody>

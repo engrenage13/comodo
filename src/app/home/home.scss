@@ -1,0 +1,138 @@
+:host {
+  display: flex;
+  min-height: 100vh;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: var(--color-background-fade);
+}
+
+.panel {
+  width: min(100%, 34rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  box-sizing: border-box;
+  padding: 1.5rem;
+  background: var(--color-background);
+  border: 1px solid #707073;
+  border-radius: .7rem;
+  box-shadow: 0 1px 2px #000000;
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+
+.brand {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.1;
+}
+
+.brand:focus {
+  outline: none;
+}
+
+.subtitle,
+.hint {
+  margin: 0;
+  color: #4d4d4d;
+}
+
+.choices,
+.shortcut-list {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.choice {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  background: var(--color-background);
+  border: 1px solid #707073;
+  border-radius: .7rem;
+  cursor: pointer;
+  padding: .9rem 1rem;
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--color-main);
+    outline: 2px solid var(--color-main);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: .65;
+  }
+}
+
+.choice-primary {
+  background: var(--color-main);
+  color: white;
+  border-color: var(--color-main);
+
+  &:hover,
+  &:focus-visible {
+    background: var(--color-main-fade);
+  }
+}
+
+.choice-icon {
+  flex: 0 0 auto;
+  font-size: 1.6rem;
+}
+
+.choice-copy {
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
+  min-width: 0;
+}
+
+.choice-title,
+.shortcut-name {
+  overflow-wrap: anywhere;
+}
+
+.choice-title {
+  font-weight: 600;
+}
+
+.choice-detail {
+  font-size: .9rem;
+}
+
+.confirm {
+  display: flex;
+  flex-direction: column;
+  gap: .8rem;
+  padding: .9rem 1rem;
+  border-radius: .7rem;
+  background: var(--color-background-fade);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

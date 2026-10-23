@@ -1,0 +1,68 @@
+<main class="panel" [attr.aria-busy]="busy()">
+  <header class="intro">
+    <h1 #heading class="brand" tabindex="-1">Comodo</h1>
+    <p class="subtitle">Choisissez un modèle pour commencer.</p>
+  </header>
+
+  <div class="choices">
+    @if (hasStoredModel()) {
+      <button type="button" class="choice choice-primary" (click)="resume()" [disabled]="busy()">
+        <span class="material-symbols-rounded choice-icon" aria-hidden="true">history</span>
+        <span class="choice-copy">
+          <span class="choice-title">Reprendre « {{ storedTitle() }} »</span>
+          <span class="choice-detail">{{ storedDetails() }}</span>
+        </span>
+      </button>
+    }
+
+    <button
+      type="button"
+      class="choice"
+      (click)="requestNewModel()"
+      [disabled]="busy()"
+      [attr.aria-expanded]="confirmNew()"
+      [attr.aria-controls]="confirmNew() ? 'confirm-new' : null"
+    >
+      <span class="material-symbols-rounded choice-icon" aria-hidden="true">note_add</span>
+      <span class="choice-copy">
+        <span class="choice-title">Nouveau modèle</span>
+        <span class="choice-detail">Partir d'un modèle vide</span>
+      </span>
+    </button>
+
+    <button type="button" class="choice" (click)="openFromComputer()" [disabled]="busy()">
+      <span class="material-symbols-rounded choice-icon" aria-hidden="true">folder_open</span>
+      <span class="choice-copy">
+        <span class="choice-title">Ouvrir un fichier</span>
+        <span class="choice-detail">Chercher un fichier JSON sur cet ordinateur</span>
+      </span>
+    </button>
+  </div>
+
+  @if (confirmNew()) {
+    <fieldset id="confirm-new" class="confirm" aria-labelledby="confirm-new-title">
+      <p id="confirm-new-title" class="no-margin">
+        Le modèle « {{ storedTitle() }} » enregistré dans ce navigateur sera remplacé.
+      </p>
+      <div class="row gap-xs">
+        <button type="button" class="ghost-button" (click)="cancelNew()" [disabled]="busy()">Annuler</button>
+        <button #confirmButton type="button" class="button" (click)="createNewModel()" [disabled]="busy()">Créer le modèle</button>
+      </div>
+    </fieldset>
+  }
+
+  @if (error()) {
+    <p class="form-error" role="alert">{{ error() }}</p>
+  }
+
+  <output class="visually-hidden">{{ busy() ? 'Ouverture du modèle.' : '' }}</output>
+
+  <input
+    #fileInput
+    type="file"
+    accept=".json,application/json"
+    hidden
+    tabindex="-1"
+    (change)="onFileSelected($event)"
+  />
+</main>

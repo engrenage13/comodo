@@ -1,6 +1,30 @@
-<div class="toolbar-foundation row center">
+<div class="toolbar-foundation row gap-s">
+  <app-project-menu />
+
+  <form class="model-title" (submit)="saveTitle($event)">
+    <label for="model-title" class="visually-hidden">Titre du modèle</label>
+    <input
+      id="model-title"
+      class="model-title-input"
+      type="text"
+      autocomplete="off"
+      [formField]="titleForm.title"
+      [attr.aria-invalid]="titleInvalid() ? true : null"
+      [attr.aria-describedby]="titleInvalid() ? 'model-title-error' : null"
+      (blur)="saveTitle()"
+    />
+    @if (titleInvalid()) {
+      <ul id="model-title-error" class="column error-list model-title-error">
+        @for (error of titleForm.title().errors(); track error.kind) {
+          <li class="form-error">{{error.message}}</li>
+        }
+      </ul>
+    }
+  </form>
+
   <nav class="toolbar row">
     <button
+      #selectionButton
       (click)="setCursorMode(0)"
       class="icobutton"
       [class.selected]="cursorMode() == 0"
@@ -15,13 +39,6 @@
       title="Ajouter une table"
     >
       <span class="material-symbols-rounded">table</span>
-    </button>
-    <button
-      (click)="downloadFile()"
-      class="icobutton"
-      title="Télécharger le MCD"
-    >
-      <span class="material-symbols-rounded">download</span>
     </button>
   </nav>
 </div>

@@ -1,0 +1,73 @@
+<div class="project" #projectRoot>
+  <button
+    #projectButton
+    type="button"
+    class="icobutton"
+    title="Projet"
+    aria-label="Projet"
+    aria-haspopup="menu"
+    [class.selected]="menuOpen()"
+    [attr.aria-expanded]="menuOpen()"
+    [attr.aria-controls]="menuOpen() && !confirmNew() ? 'project-menu' : null"
+    [disabled]="busy()"
+    (click)="toggleMenu()"
+  >
+    <span class="material-symbols-rounded" aria-hidden="true">menu</span>
+  </button>
+
+  @if (menuOpen()) {
+    @if (confirmNew()) {
+      <fieldset class="menu" aria-labelledby="project-confirm-title">
+        <p id="project-confirm-title" class="confirm-text">
+          Le modèle « {{ title() }} » enregistré dans ce navigateur sera remplacé.
+        </p>
+        <div class="row gap-xs">
+          <button type="button" class="ghost-button" (click)="cancelConfirm()" [disabled]="busy()">Annuler</button>
+          <button
+            #confirmButton
+            type="button"
+            class="button"
+            (click)="confirmCreate()"
+            [disabled]="busy()"
+          >
+            Créer le modèle
+          </button>
+        </div>
+      </fieldset>
+    } @else {
+      <div id="project-menu" class="menu" role="menu" (keydown)="onMenuKeydown($event)">
+        <button #menuItem type="button" class="menu-item" role="menuitem" (click)="requestNew()" [disabled]="busy()">
+          <span class="material-symbols-rounded" aria-hidden="true">note_add</span>
+          Nouveau projet
+        </button>
+        <button #menuItem type="button" class="menu-item" role="menuitem" (click)="openProject()" [disabled]="busy()">
+          <span class="material-symbols-rounded" aria-hidden="true">folder_open</span>
+          Ouvrir un projet
+        </button>
+        <div class="menu-save">
+          <button #menuItem type="button" class="menu-item" role="menuitem" (click)="saveAs()" [disabled]="busy()">
+            <span class="material-symbols-rounded" aria-hidden="true">download</span>
+            Télécharger
+          </button>
+        </div>
+      </div>
+    }
+  }
+
+  @if (!menuOpen()) {
+    @if (error()) {
+      <p class="message form-error" role="alert">{{ error() }}</p>
+    } @else if (busy()) {
+      <output class="visually-hidden">Ouverture du modèle.</output>
+    }
+  }
+
+  <input
+    #fileInput
+    type="file"
+    accept=".json,application/json"
+    hidden
+    tabindex="-1"
+    (change)="onFileSelected($event)"
+  />
+</div>
