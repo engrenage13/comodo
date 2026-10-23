@@ -1,10 +1,9 @@
 export enum EDataType {
   String = "string",
-  Integer = "int",
+  Number = "number",
   Date = "date",
   Time = "time",
   DateTime = "datetime",
-  Blob = "blob",
 }
 
 export enum ERelationQuantity {

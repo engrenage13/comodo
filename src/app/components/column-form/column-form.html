@@ -25,10 +25,11 @@
           <div class="column gap-xxs">
             <label for="type">Type</label>
             <select id="type" class="input row" [formField]="columnForm.type">
-              <option value="string">String</option>
-              <option value="int">Integer</option>
-              <option value="float">Float</option>
-              <option value="blob">Blob</option>
+              <option [value]="EDataType.String">String</option>
+              <option [value]="EDataType.Number">Number</option>
+              <option [value]="EDataType.Date">Date</option>
+              <option [value]="EDataType.Time">Time</option>
+              <option [value]="EDataType.DateTime">DateTime</option>
             </select>
           </div>
           <div class="column gap-xxs field-xxs">
@@ -38,23 +39,23 @@
         </div>
 
         <div class="row gap-xs">
-          <button 
-            class="chips" 
+          <button
+            class="chips"
             [class.selected]="columnDatas().isPrimaryKey"
             (click)="declareAsPrimaryKey()"
           >
             Clé primaire
           </button>
-          <button 
-            class="chips" 
+          <button
+            class="chips"
             [class.selected]="columnDatas().isUnique"
             (click)="columnDatas().isUnique = !columnDatas().isUnique"
             [disabled]="columnDatas().isPrimaryKey"
           >
             Unique
           </button>
-          <button 
-            class="chips" 
+          <button
+            class="chips"
             [class.selected]="columnDatas().isNotNull"
             (click)="columnDatas().isNotNull = !columnDatas().isNotNull"
             [disabled]="columnDatas().isPrimaryKey"
