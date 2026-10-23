@@ -51,4 +51,6 @@ export class ColumnForm {
       this.columnDatas().isNotNull = true;
     }
   }
+
+  protected readonly EDataType = EDataType;
 }
