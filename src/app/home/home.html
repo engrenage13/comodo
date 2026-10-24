@@ -1,54 +1,51 @@
-<main [attr.aria-busy]="busy()" class="m-column m-center extra-gap">
+<main [attr.aria-busy]="busy()" class="m-column m-center m-left extra-gap">
   <h1 #heading class="local-title">Comodo</h1>
 
-  <div class="m-column m-gap">
+  <div class="m-row m-gap-l button-list">
     @if (hasStoredModel()) {
-      <button class="m-button extended-button" (click)="resume()" [disabled]="busy()">
+      <button
+        class="m-ghost-button extended-button m-column m-grow infobulle-support"
+        (click)="resume()"
+        [disabled]="busy()"
+      >
         <span class="material-symbols-rounded icon" aria-hidden="true">history</span>
-        <span class="m-column m-up">
-          <span class="m-heading-l inline">Reprendre « {{ storedTitle() }} »</span>
-          <span class="m-description m-row m-gap-xs desc">
-            {{`${tablesCount()} table` | accord:tablesCount()}}
+        <span>Reprendre</span>
+        <div class="infobulle m-card">
+          <span class="m-heading-l inline">{{storedTitle()}}</span>
+          <span class="m-description m-row m-gap-xs inline">
+          {{`${tablesCount()} table` | accord:tablesCount()}}
             enregistrées dans ce navigateur
-          </span>
         </span>
+        </div>
       </button>
     }
 
-    <div class="m-row m-gap-l">
-      <button
-        class="m-ghost-button extended-button m-column m-grow"
-        (click)="requestNewModel()"
-        [disabled]="busy()"
-        [attr.aria-expanded]="confirmNew()"
-        [attr.aria-controls]="confirmNew() ? 'confirm-new' : null"
-      >
-        <span class="material-symbols-rounded icon" aria-hidden="true">note_add</span>
-        <span>Nouveau modèle</span>
-      </button>
+    <button
+      class="m-ghost-button extended-button m-column m-grow"
+      (click)="requestNewModel()"
+      [disabled]="busy()"
+      [attr.aria-expanded]="confirmNew()"
+      [attr.aria-controls]="confirmNew() ? 'confirm-new' : null"
+    >
+      <span class="material-symbols-rounded icon" aria-hidden="true">note_add</span>
+      <span>Nouveau modèle</span>
+    </button>
 
-      <button
-        class="m-ghost-button extended-button m-column m-grow"
-        (click)="openFromComputer()"
-        [disabled]="busy()"
-        title="Cherchez un fichier JSON sur votre appareil"
-      >
-        <span class="material-symbols-rounded icon" aria-hidden="true">folder_open</span>
-        <span>Ouvrir un fichier</span>
-      </button>
-    </div>
+    <button
+      class="m-ghost-button extended-button m-column m-grow"
+      (click)="openFromComputer()"
+      [disabled]="busy()"
+      title="Cherchez un fichier JSON sur votre appareil"
+    >
+      <span class="material-symbols-rounded icon" aria-hidden="true">folder_open</span>
+      <span>Ouvrir un fichier</span>
+    </button>
   </div>
 
   @if (confirmNew()) {
-    <fieldset id="confirm-new" class="confirm" aria-labelledby="confirm-new-title">
-      <p id="confirm-new-title" class="no-margin">
-        Le modèle « {{ storedTitle() }} » enregistré dans ce navigateur sera remplacé.
-      </p>
-      <div class="row gap-xs">
-        <button type="button" class="ghost-button" (click)="cancelNew()" [disabled]="busy()">Annuler</button>
-        <button #confirmButton type="button" class="button" (click)="createNewModel()" [disabled]="busy()">Créer le modèle</button>
-      </div>
-    </fieldset>
+    <app-confirm-popup (confirm)="$event ? createNewModel() : cancelNew()">
+      <p>Le modèle « {{ storedTitle() }} » enregistré dans ce navigateur sera remplacé.</p>
+    </app-confirm-popup>
   }
 
   @if (error()) {

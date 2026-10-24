@@ -1,0 +1,11 @@
+<app-popup
+  windowTitle="Confirmation"
+  (windowClosed)="confirm.emit(false)"
+  [closeDemand]="closed()"
+>
+  <ng-content></ng-content>
+  <div class="m-row m-right m-gap-s">
+    <button class="m-button" (click)="close(true)">Confirmer</button>
+    <button class="m-ghost-button" (click)="close(false)">Annuler</button>
+  </div>
+</app-popup>

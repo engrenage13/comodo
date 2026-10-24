@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import {ModelService} from '../services/model-service';
 import {AccordPipe} from '../pipes/accord-pipe';
+import {ConfirmPopup} from '../components/confirm-popup/confirm-popup';
 
 @Component({
   selector: 'app-home',
@@ -19,7 +20,8 @@ import {AccordPipe} from '../pipes/accord-pipe';
     '(keydown.escape)': 'cancelNew()',
   },
   imports: [
-    AccordPipe
+    AccordPipe,
+    ConfirmPopup
   ]
 })
 export class Home {

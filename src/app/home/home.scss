@@ -5,40 +5,39 @@
 }
 
 main {
-  width: min(100%, 34rem);
-  height: 100vh;
+  width: 100%;
   box-sizing: border-box;
   padding: 1.5rem;
 }
 
-.desc, .inline {
-  text-wrap: nowrap;
-}
-.desc {
-  padding-bottom: .3rem;
+.button-list {
+  width: min(100%, 50vw);
 }
 .extended-button {
-  height: unset;
+  height: 11rem;
+  width: 21rem;
 }
 .extra-gap {
+  margin-top: 10rem;
   gap: 6rem;
 }
 .icon {
   font-size: 5rem;
 }
+.infobulle {
+  position: absolute;
+  bottom: -80%;
+}
+.infobulle-support {
+  position: relative;
+}
+.inline {
+  text-wrap: nowrap;
+}
 .local-title {
   font-size: 6.5rem;
   font-weight: 400;
   line-height: unset;
-}
-
-.confirm {
-  display: flex;
-  flex-direction: column;
-  gap: .8rem;
-  padding: .9rem 1rem;
-  border-radius: .7rem;
-  background: var(--color-background-fade);
 }
 
 .visually-hidden {
