@@ -12,6 +12,7 @@ import {ModelService} from '../../services/model-service';
 })
 export class FileImportPopup {
   private readonly modelService: ModelService = inject(ModelService);
+  private dragDepth: number = 0;
 
   // Output
   confirm = output<boolean>();
@@ -19,32 +20,66 @@ export class FileImportPopup {
   // Internal work
   error = this.modelService.error;
   closed = signal<boolean>(false);
+  readonly dragOver = signal<boolean>(false);
 
   close(confirm: boolean): void {
     this.closed.set(true);
     this.confirm.emit(confirm);
   }
 
-  drop(event: Event): void {
-    event.stopPropagation();
+  onDragEnter(event: DragEvent): void {
     event.preventDefault();
+    this.dragDepth++;
+    this.dragOver.set(true);
+  }
 
-    const dataTransfer = event as unknown as DataTransfer;
-    const files = dataTransfer.files;
-    if (files && files.length > 0) {
-      void this.importFile(files[0]);
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    if (event.dataTransfer) {
+      event.dataTransfer.dropEffect = 'copy';
     }
   }
 
-  private async importFile(file: File): Promise<void> {
-    try {
-      this.modelService.openFile(await file.text());
-    } catch {
+  onDragLeave(): void {
+    this.dragDepth = Math.max(0, this.dragDepth - 1);
+    if (this.dragDepth === 0) {
+      this.dragOver.set(false);
+    }
+  }
+
+  onDrop(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.dragDepth = 0;
+    this.dragOver.set(false);
+
+    const file: File | null = event.dataTransfer?.files.item(0) ?? null;
+    if (!file || !this.isJsonFile(file)) {
+      this.error.set("Déposez un fichier JSON.");
       return;
-    } finally {
-      if (!this.error()) {
-        this.close(true);
-      }
+    }
+    void this.importFile(file);
+  }
+
+  private isJsonFile(file: File): boolean {
+    const type: string = file.type.toLowerCase();
+    return type === "application/json"
+      || type === "text/json"
+      || file.name.toLowerCase().endsWith(".json");
+  }
+
+  private async importFile(file: File): Promise<void> {
+    let content: string;
+    try {
+      content = await file.text();
+    } catch {
+      this.error.set("Impossible de lire ce fichier.");
+      return;
+    }
+    this.modelService.openFile(content);
+    if (!this.error()) {
+      this.close(true);
     }
   }
 

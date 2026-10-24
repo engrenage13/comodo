@@ -3,4 +3,10 @@
   border: 2px dashed var(--m-color-grey-fade);
   padding: 1rem;
   height: 60vh;
+  transition: all .15s ease-in-out;
+
+  &.drag-over {
+    border: 3px dashed var(--m-color-main);
+    background-color: var(--m-color-background-main);
+  }
 }

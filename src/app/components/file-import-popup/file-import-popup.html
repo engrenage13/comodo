@@ -4,7 +4,14 @@
   [closeDemand]="closed()"
   minWidth="85vw"
 >
-  <label class="m-column m-center m-gap-xs drop-zone" (drop)="drop($event)">
+  <label
+    class="m-column m-center m-gap-xs drop-zone"
+    [class.drag-over]="dragOver()"
+    (dragenter)="onDragEnter($event)"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave()"
+    (drop)="onDrop($event)"
+  >
     <p>Glissez un fichier ici ou cliquez pour en sélectionner un sur votre appareil</p>
     <input
       class="m-input"
