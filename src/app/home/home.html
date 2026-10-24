@@ -1,5 +1,5 @@
 <main [attr.aria-busy]="busy()" class="m-column m-center m-left extra-gap">
-  <h1 #heading class="local-title">Comodo</h1>
+  <h1 class="local-title">Comodo</h1>
 
   <div class="m-row m-gap-l button-list">
     @if (hasStoredModel()) {
@@ -33,7 +33,7 @@
 
     <button
       class="m-ghost-button extended-button m-column m-grow"
-      (click)="openFromComputer()"
+      (click)="enableOpenFilePopup.set(true)"
       [disabled]="busy()"
       title="Cherchez un fichier JSON sur votre appareil"
     >
@@ -42,24 +42,15 @@
     </button>
   </div>
 
+  @if (enableOpenFilePopup()) {
+    <app-file-import-popup (confirm)="closeFilePopup($event)" />
+  }
+
   @if (confirmNew()) {
-    <app-confirm-popup (confirm)="$event ? createNewModel() : cancelNew()">
+    <app-confirm-popup (confirm)="confirmNewModel($event)">
       <p>Le modèle « {{ storedTitle() }} » enregistré dans ce navigateur sera remplacé.</p>
     </app-confirm-popup>
   }
 
-  @if (error()) {
-    <p class="form-error" role="alert">{{ error() }}</p>
-  }
-
   <output class="visually-hidden">{{ busy() ? 'Ouverture du modèle.' : '' }}</output>
-
-  <input
-    #fileInput
-    type="file"
-    accept=".json,application/json"
-    hidden
-    tabindex="-1"
-    (change)="onFileSelected($event)"
-  />
 </main>

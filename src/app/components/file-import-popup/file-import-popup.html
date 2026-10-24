@@ -1,0 +1,27 @@
+<app-popup
+  windowTitle="Ouvrir un fichier"
+  (windowClosed)="confirm.emit(false)"
+  [closeDemand]="closed()"
+  minWidth="85vw"
+>
+  <label class="m-column m-center m-gap-xs drop-zone" (drop)="drop($event)">
+    <p>Glissez un fichier ici ou cliquez pour en sélectionner un sur votre appareil</p>
+    <input
+      class="m-input"
+      type="file"
+      accept=".json,application/json"
+      hidden="hidden"
+      (change)="onFileSelected($event)"
+    />
+  </label>
+
+  @if (error()) {
+    <div class="m-message m-critical" role="alert">
+      <p class="m-message-heading">
+        <span class="material-symbols-rounded" aria-hidden="true">error</span>
+        Erreur
+      </p>
+      <p>{{error()}}</p>
+    </div>
+  }
+</app-popup>

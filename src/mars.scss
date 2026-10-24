@@ -416,6 +416,46 @@ body {
     color: var(--m-color-main);
   }
 }
+// Messages
+.m-message {
+  @extend .m-column;
+  --border: var(--m-color-info);
+  --background: var(--m-color-info-fade);
+  --background-hover: color-mix(in srgb, var(--border) 70%, transparent);
+
+  background: var(--background);
+  border-left: 7px solid var(--border);
+  gap: .6rem;
+
+  &-heading {
+    @extend .m-row, .m-gap-s, .m-bold;
+    font-size: 1.7rem;
+    text-transform: uppercase;
+
+    .material-symbols-rounded {
+      font-size: 3rem;
+      color: var(--border);
+    }
+  }
+
+  .m-link {
+    color: var(--border);
+
+    &::after {
+      background: var(--border);
+    }
+  }
+
+  &.m-success {
+    --border: var(--m-color-success);
+    --background: var(--m-color-success-fade);
+  }
+
+  &.m-critical {
+    --border: var(--m-color-critical);
+    --background: var(--m-color-critical-fade);
+  }
+}
 // Form
 input, select {
   font-family: inherit;
