@@ -1,17 +1,14 @@
-@use '../../../styles.scss';
-
 .toolbar {
-  padding: .2rem;
-  border: 1px solid #707073;
-  box-shadow: 0 1px 2px #000000;
+  padding: .2rem .3rem;
+  border: 1px solid var(--m-color-grey-fade);
+  box-shadow: 0 1px 2px var(--m-color-overlay);
   border-radius: .7rem;
-  background: white;
-  gap: .4rem;
+  background: var(--m-color-background);
 
   &-foundation {
     position: fixed;
     top: .5rem;
-    left: .5rem;
+    left: 1rem;
     width: calc(100vw - 1rem);
   }
 }
@@ -19,80 +16,19 @@
 .model-title {
   position: relative;
   width: max-content;
-  margin: 0;
-
-  &-input {
-    font: inherit;
-    font-weight: 600;
-    color: var(--color-text);
-    background: white;
-    border: 1px solid #707073;
-    box-shadow: 0 1px 2px #000000;
-    border-radius: .7rem;
-    box-sizing: border-box;
-    height: 2.5rem;
-    padding: 0 .8rem;
-    width: 14rem;
-    min-width: 8rem;
-    max-width: min(24rem, 46vw);
-    field-sizing: content;
-
-    &:hover {
-      border-color: var(--color-main);
-    }
-
-    &:focus-visible {
-      outline: 2px solid var(--color-main);
-      outline-offset: 2px;
-    }
-
-    &[aria-invalid="true"] {
-      border-color: #800a0a;
-    }
-  }
 
   &-error {
     position: absolute;
     top: calc(100% + .35rem);
     left: 0;
     z-index: 1;
-    margin: 0;
-    padding: .35rem .6rem .35rem 1.5rem;
-    background: white;
-    border-radius: .4rem;
-    box-shadow: 0 1px 2px #000000;
+    background: var(--m-color-background);
+    border-radius: .5rem;
+    box-shadow: 0 1px 2px var(--m-color-overlay);
     white-space: nowrap;
-  }
-}
 
-@media (max-width: 720px) {
-  .toolbar-foundation {
-    grid-template-columns: auto minmax(0, 1fr);
-    column-gap: .4rem;
-  }
-
-  .toolbar {
-    grid-column: 1;
-    grid-row: 1;
-  }
-
-  .model-title {
-    grid-column: 2;
-    grid-row: 1;
-    justify-self: stretch;
-    width: auto;
-    min-width: 0;
-
-    &-input {
-      width: 100%;
-      min-width: 0;
-      max-width: none;
-      field-sizing: fixed;
-    }
-
-    &-error {
-      white-space: normal;
-      max-width: calc(100vw - 1.5rem);
+    li {
+      list-style-type: none;
     }
   }
 }
@@ -109,28 +45,8 @@
   border: 0;
 }
 
-.icobutton {
-  @extend .m-row, .m-center;
-
-  padding: 0;
-  border: none;
-  background: transparent;
+.button-group {
+  padding: .2rem;
+  background: var(--m-color-background-fade);
   border-radius: .5rem;
-  width: 2.1rem;
-  height: 2.1rem;
-  transition: all .2s ease-in;
-  cursor: pointer;
-
-  &:hover {
-    background: #3b50bc4f;
-  }
-
-  &.selected {
-    background: var(--color-main);
-    color: white;
-
-    &:hover {
-      background: var(--color-main-fade);
-    }
-  }
 }

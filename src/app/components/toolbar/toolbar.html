@@ -1,44 +1,49 @@
-<div class="toolbar-foundation row gap-s">
+<div class="toolbar-foundation m-row m-gap-s">
   <app-project-menu />
 
-  <form class="model-title" (submit)="saveTitle($event)">
-    <label for="model-title" class="visually-hidden">Titre du modèle</label>
-    <input
-      id="model-title"
-      class="model-title-input"
-      type="text"
-      autocomplete="off"
-      [formField]="titleForm.title"
-      [attr.aria-invalid]="titleInvalid() ? true : null"
-      [attr.aria-describedby]="titleInvalid() ? 'model-title-error' : null"
-      (blur)="saveTitle()"
-    />
-    @if (titleInvalid()) {
-      <ul id="model-title-error" class="column error-list model-title-error">
-        @for (error of titleForm.title().errors(); track error.kind) {
-          <li class="form-error">{{error.message}}</li>
-        }
-      </ul>
-    }
-  </form>
+  <div class="toolbar m-row m-gap-s">
+    <form class="model-title" (submit)="saveTitle($event)">
+      <label for="model-title" class="visually-hidden">Titre du modèle</label>
+      <input
+        id="model-title"
+        class="m-input"
+        type="text"
+        autocomplete="off"
+        [formField]="titleForm.title"
+        [attr.aria-invalid]="titleInvalid() ? true : null"
+        [attr.aria-describedby]="titleInvalid() ? 'model-title-error' : null"
+        (blur)="saveTitle()"
+      />
+      @if (titleInvalid()) {
+        <div class="model-title-error">
+          <ul id="model-title-error" class="m-message m-critical">
+            @for (error of titleForm.title().errors(); track error.kind) {
+              <li class="m-row m-gap-s">
+                <span class="material-symbols-rounded">warning</span>
+                {{error.message}}
+              </li>
+            }
+          </ul>
+        </div>
+      }
+    </form>
 
-  <nav class="toolbar row">
-    <button
-      #selectionButton
-      (click)="setCursorMode(0)"
-      class="icobutton"
-      [class.selected]="cursorMode() == 0"
-      title="Sélection"
-    >
-      <span class="material-symbols-rounded">arrow_selector_tool</span>
-    </button>
-    <button
-      (click)="setCursorMode(1)"
-      class="icobutton"
-      [class.selected]="cursorMode() == 1"
-      title="Ajouter une table"
-    >
-      <span class="material-symbols-rounded">table</span>
-    </button>
-  </nav>
+    <div class="m-row m-gap-xs button-group">
+      <button
+        #selectionButton
+        (click)="setCursorMode(0)"
+        [class]="(cursorMode() == 0 ? 'm-button' : 'm-ghost-button') + ' m-ico-button'"
+        title="Sélection"
+      >
+        <span class="material-symbols-rounded">arrow_selector_tool</span>
+      </button>
+      <button
+        (click)="setCursorMode(1)"
+        [class]="(cursorMode() == 1 ? 'm-button' : 'm-ghost-button') + ' m-ico-button'"
+        title="Ajouter une table"
+      >
+        <span class="material-symbols-rounded">table</span>
+      </button>
+    </div>
+  </div>
 </div>

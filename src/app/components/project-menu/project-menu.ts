@@ -1,5 +1,6 @@
 import {Component, ElementRef, inject, signal, viewChild, viewChildren} from '@angular/core';
 import {ModelService} from '../../services/model-service';
+import {ConfirmPopup} from '../confirm-popup/confirm-popup';
 
 @Component({
   selector: 'app-project-menu',
@@ -9,6 +10,9 @@ import {ModelService} from '../../services/model-service';
     '(document:click)': 'onDocumentClick($event)',
     '(document:keydown.escape)': 'onEscape()',
   },
+  imports: [
+    ConfirmPopup
+  ]
 })
 export class ProjectMenu {
   private readonly modelService: ModelService = inject(ModelService);
@@ -17,7 +21,6 @@ export class ProjectMenu {
   private readonly projectButton = viewChild<ElementRef<HTMLButtonElement>>('projectButton');
   private readonly fileInput = viewChild<ElementRef<HTMLInputElement>>('fileInput');
   private readonly menuItems = viewChildren<ElementRef<HTMLButtonElement>>('menuItem');
-  private readonly confirmButton = viewChild<ElementRef<HTMLButtonElement>>('confirmButton');
 
   readonly menuOpen = signal(false);
 
@@ -27,19 +30,18 @@ export class ProjectMenu {
   error = this.modelService.error;
   title = this.modelService.title;
 
-  cancelConfirm(): void {
-    this.modelService.cancelNew();
-    setTimeout(() => this.focusFirstItem());
-  }
-
   closeMenu(): void {
     this.menuOpen.set(false);
     this.modelService.cancelNew();
   }
 
-  confirmCreate(): void {
-    this.modelService.startNew();
-    this.menuOpen.set(false);
+  confirmNewModel(confirmation: boolean): void {
+    confirmation ? this.modelService.startNew() : this.modelService.cancelNew();
+    if (confirmation) {
+      this.menuOpen.set(false);
+    } else {
+      setTimeout(() => this.focusFirstItem());
+    }
   }
 
   onDocumentClick(event: Event): void {
@@ -96,9 +98,7 @@ export class ProjectMenu {
   requestNew(): void {
     if (this.modelService.requestNew()) {
       this.menuOpen.set(false);
-      return;
     }
-    setTimeout(() => this.confirmButton()?.nativeElement.focus());
   }
 
   saveAs(): void {
