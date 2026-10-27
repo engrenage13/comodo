@@ -2,7 +2,7 @@
   <button
     #projectButton
     type="button"
-    [class]="(menuOpen() ? 'm-button' : 'm-ghost-button') + ' m-ico-button'"
+    class="m-button m-ico-button"
     title="Projet"
     aria-label="Projet"
     aria-haspopup="menu"
@@ -11,7 +11,9 @@
     [disabled]="busy()"
     (click)="toggleMenu()"
   >
-    <span class="material-symbols-rounded" aria-hidden="true">menu</span>
+    <span class="material-symbols-rounded rotate-anchor" aria-hidden="true" [class.rotate]="menuOpen()">
+      {{menuOpen() ? 'add' : 'menu'}}
+    </span>
   </button>
 
   @if (menuOpen()) {
@@ -38,7 +40,7 @@
         type="button"
         class="m-ghost-button m-left"
         role="menuitem"
-        (click)="openProject()"
+        (click)="isFilePopupOpened.set(true)"
         [disabled]="busy()"
       >
         <span class="material-symbols-rounded" aria-hidden="true">folder_open</span>
@@ -60,27 +62,15 @@
       </button>
     </div>
 
+    @if (isFilePopupOpened()) {
+      <app-file-import-popup (confirm)="closeFilePopup($event)" />
+    }
+
     @if (confirmNew()) {
       <app-confirm-popup (confirm)="confirmNewModel($event)">
         <p>Le modèle « {{ title() }} » enregistré dans ce navigateur sera remplacé.</p>
       </app-confirm-popup>
     }
   }
-
-  @if (!menuOpen()) {
-    @if (error()) {
-      <p class="message form-error" role="alert">{{ error() }}</p>
-    } @else if (busy()) {
-      <output class="visually-hidden">Ouverture du modèle.</output>
-    }
-  }
-
-  <input
-    #fileInput
-    type="file"
-    accept=".json,application/json"
-    hidden
-    tabindex="-1"
-    (change)="onFileSelected($event)"
-  />
+  <output class="visually-hidden">{{ busy() ? 'Ouverture du modèle.' : '' }}</output>
 </div>

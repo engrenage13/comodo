@@ -27,7 +27,7 @@ export class Home {
   readonly busy = this.modelService.busy;
   readonly error = this.modelService.error;
   tablesCount = computed<number>(() => this.modelService.tables().length);
-  enableOpenFilePopup = signal<boolean>(false);
+  isFilePopupOpened = signal<boolean>(false);
 
   close(): void {
     this.error.set(null);
@@ -42,7 +42,7 @@ export class Home {
   }
 
   closeFilePopup(fileLoaded: boolean): void {
-    this.enableOpenFilePopup.set(false);
+    this.isFilePopupOpened.set(false);
     if (fileLoaded) {
       this.close();
     }

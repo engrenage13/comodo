@@ -33,7 +33,7 @@
 
     <button
       class="m-ghost-button extended-button m-column m-grow"
-      (click)="enableOpenFilePopup.set(true)"
+      (click)="isFilePopupOpened.set(true)"
       [disabled]="busy()"
       title="Cherchez un fichier JSON sur votre appareil"
     >
@@ -42,7 +42,7 @@
     </button>
   </div>
 
-  @if (enableOpenFilePopup()) {
+  @if (isFilePopupOpened()) {
     <app-file-import-popup (confirm)="closeFilePopup($event)" />
   }
 

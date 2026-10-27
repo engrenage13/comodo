@@ -1,9 +1,13 @@
-:host {
-  display: flex;
-}
-
 .project {
   position: relative;
+}
+
+.rotate {
+  transform: rotate(-45deg) scale(1.4);
+
+  &-anchor {
+    transition: all .15s ease;
+  }
 }
 
 .menu {
@@ -20,18 +24,4 @@
   border: 1px solid var(--m-color-border);
   border-radius: .7rem;
   box-shadow: 0 1px 2px var(--m-color-overlay);
-}
-
-.message {
-  position: absolute;
-  top: calc(100% + .35rem);
-  left: 0;
-  z-index: 2;
-  width: max-content;
-  max-width: min(22rem, 80vw);
-  margin: 0;
-  padding: .45rem .7rem;
-  background: white;
-  border-radius: .5rem;
-  box-shadow: 0 1px 2px #000000;
 }

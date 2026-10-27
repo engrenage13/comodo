@@ -1,6 +1,7 @@
 import {Component, ElementRef, inject, signal, viewChild, viewChildren} from '@angular/core';
 import {ModelService} from '../../services/model-service';
 import {ConfirmPopup} from '../confirm-popup/confirm-popup';
+import {FileImportPopup} from '../file-import-popup/file-import-popup';
 
 @Component({
   selector: 'app-project-menu',
@@ -11,7 +12,8 @@ import {ConfirmPopup} from '../confirm-popup/confirm-popup';
     '(document:keydown.escape)': 'onEscape()',
   },
   imports: [
-    ConfirmPopup
+    ConfirmPopup,
+    FileImportPopup
   ]
 })
 export class ProjectMenu {
@@ -19,7 +21,6 @@ export class ProjectMenu {
 
   private readonly projectRoot = viewChild<ElementRef<HTMLElement>>('projectRoot');
   private readonly projectButton = viewChild<ElementRef<HTMLButtonElement>>('projectButton');
-  private readonly fileInput = viewChild<ElementRef<HTMLInputElement>>('fileInput');
   private readonly menuItems = viewChildren<ElementRef<HTMLButtonElement>>('menuItem');
 
   readonly menuOpen = signal(false);
@@ -27,8 +28,17 @@ export class ProjectMenu {
   // File management
   busy = this.modelService.busy;
   confirmNew = this.modelService.confirmNew;
-  error = this.modelService.error;
   title = this.modelService.title;
+  isFilePopupOpened = signal<boolean>(false);
+
+  closeFilePopup(fileLoaded: boolean): void {
+    this.isFilePopupOpened.set(false);
+    if (fileLoaded) {
+      this.menuOpen.set(false);
+    } else {
+      setTimeout(() => this.focusFirstItem());
+    }
+  }
 
   closeMenu(): void {
     this.menuOpen.set(false);
@@ -62,15 +72,6 @@ export class ProjectMenu {
     this.projectButton()?.nativeElement.focus();
   }
 
-  onFileSelected(event: Event): void {
-    const input: EventTarget | null = event.target;
-    if (!(input instanceof HTMLInputElement)) return;
-    const file: File | null = input.files?.item(0) ?? null;
-    input.value = "";
-    if (!file) return;
-    void this.importFile(file);
-  }
-
   onMenuKeydown(event: KeyboardEvent): void {
     const items: HTMLButtonElement[] = this.menuItems().map(item => item.nativeElement);
     if (items.length === 0) return;
@@ -88,11 +89,6 @@ export class ProjectMenu {
       event.preventDefault();
       items.at(-1)?.focus();
     }
-  }
-
-  openProject(): void {
-    this.fileInput()?.nativeElement.click();
-    this.menuOpen.set(false);
   }
 
   requestNew(): void {
@@ -114,14 +110,6 @@ export class ProjectMenu {
       return;
     }
     setTimeout(() => this.focusFirstItem());
-  }
-
-  private async importFile(file: File): Promise<void> {
-    try {
-      this.modelService.openFile(await file.text());
-    } catch {
-      return;
-    }
   }
 
   private focusFirstItem(): void {
