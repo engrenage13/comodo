@@ -7,14 +7,15 @@
   [fAutoSizeToFitChildren]="true"
   (fNodePositionChange)="updateCoords($event)"
   [attr.aria-label]="content().title"
+  class="m-column"
 >
-  <div class="column table-content">
-    <div class="row between gap-s">
+  <div class="m-column table-content">
+    <div class="m-row m-between m-gap-s title-row">
       <p class="table-title">{{content().title}}</p>
 
-      <div class="row right options-row">
+      <div class="m-row m-right options-row">
         <button
-          class="ico-button classic"
+          class="m-ghost-button m-ico-button ico-button"
           title="Modifier la table"
           (click)="edit.emit()"
           [disabled]="disableOptions()"
@@ -49,7 +50,7 @@
                 ({{column.maxlength}})
               }
             </td>
-            <td class="description" [class.empty]="!column.isNotNull">
+            <td class="m-description" [class.empty]="!column.isNotNull">
               {{column.isNotNull ? 'non null' : ''}}
             </td>
             <td fConnector [fConnectorId]="`t${id()}-${column.name}@2`" class="connector-right"></td>

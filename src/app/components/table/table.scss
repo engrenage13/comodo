@@ -1,16 +1,14 @@
-@use "../../../styles.scss";
-
 .f-node {
-  @extend .m-column;
-
   padding: .2rem 0;
-  background: #ffffff;
+  background: var(--m-color-background);
+  color: var(--m-color-text);
   border-radius: 6px;
-  border: 1px solid #3c3c4347;
+  border: 1px solid var(--m-color-grey);
   width: fit-content;
+  transition: all .15s ease-in-out;
 
   &.f-selected {
-    border-color: var(--connection-color, #3451b2);
+    border: 2px solid var(--m-color-main-fade);
   }
 }
 
@@ -20,27 +18,13 @@
 }
 
 .ico-button {
-  background: none;
-  border: none;
+  width: 1.8rem;
+  height: 1.8rem;
   padding: 0;
-  transition: all .2s ease-in-out;
-  color: #3c3c43;
+  color: var(--m-color-text);
 
   .material-symbols-rounded {
-    font-size: 1.3rem;
-  }
-
-  &.classic {
-    cursor: pointer;
-  }
-
-  &:hover, &:focus {
-    color: var(--color-main);
-  }
-
-  &:disabled {
-    color: #92929b;
-    cursor: not-allowed;
+    font-size: 1.5rem;
   }
 }
 
@@ -50,13 +34,18 @@
   font-weight: bold;
 }
 
+.title-row {
+  background: var(--m-color-background-main);
+  border-radius: 6px 6px 0 0;
+}
+
 .column-table {
   text-align: left;
   border-collapse: collapse;
 
   tbody tr {
     &:nth-child(even) {
-      background: var(--color-background-fade);
+      background: var(--m-color-background-fade);
     }
 
     td {
@@ -78,7 +67,7 @@
 }
 
 .small {
-  font-size: 1rem;
+  font-size: 1.4rem;
 }
 
 .description {
