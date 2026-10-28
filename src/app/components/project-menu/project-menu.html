@@ -1,76 +1,61 @@
-<div class="project" #projectRoot>
-  <button
-    #projectButton
-    type="button"
-    class="m-button m-ico-button"
-    title="Projet"
-    aria-label="Projet"
-    aria-haspopup="menu"
-    [attr.aria-expanded]="menuOpen()"
-    [attr.aria-controls]="menuOpen() && !confirmNew() ? 'project-menu' : null"
-    [disabled]="busy()"
-    (click)="toggleMenu()"
-  >
-    <span class="material-symbols-rounded rotate-anchor" aria-hidden="true" [class.rotate]="menuOpen()">
-      {{menuOpen() ? 'add' : 'menu'}}
+<button
+  ngMenuTrigger
+  #origin
+  #trigger="ngMenuTrigger"
+  [menu]="baseMenu()"
+  type="button"
+  class="m-button m-ico-button"
+  title="Projet"
+  aria-label="Projet"
+  [attr.aria-expanded]="expanded()"
+  [attr.aria-controls]="expanded() && !confirmNew() ? 'project-menu' : null"
+  [disabled]="busy()"
+>
+    <span class="material-symbols-rounded rotate-anchor" aria-hidden="true" [class.rotate]="expanded()">
+      {{expanded() ? 'add' : 'menu'}}
     </span>
-  </button>
+</button>
 
-  @if (menuOpen()) {
-    <div
-      id="project-menu"
-      class="menu m-column m-gap-xs"
-      role="menu"
-      (keydown)="onMenuKeydown($event)"
-    >
-      <button
-        #menuItem
-        type="button"
-        class="m-ghost-button m-left"
-        role="menuitem"
-        (click)="requestNew()"
-        [disabled]="busy()"
-      >
-        <span class="material-symbols-rounded" aria-hidden="true">note_add</span>
-        Nouveau projet
-      </button>
+<ng-template
+  [cdkConnectedOverlay]="{origin, usePopover: 'inline'}"
+  [cdkConnectedOverlayOpen]="trigger.expanded()"
+  [cdkConnectedOverlayPositions]="[
+    {originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: 4},
+  ]"
+  cdkAttachPopoverAsChild
+>
+  <div ngMenu #baseMenu="ngMenu">
+    <ng-template ngMenuContent>
+      <div class="m-column m-gap-xs">
+        @for (section of options; track $index; let first = $first) {
+          @for (item of section; track item.code) {
+            @if (!first) {
+              <hr class="m-separator" aria-orientation="horizontal" />
+            }
 
-      <button
-        #menuItem
-        type="button"
-        class="m-ghost-button m-left"
-        role="menuitem"
-        (click)="isFilePopupOpened.set(true)"
-        [disabled]="busy()"
-      >
-        <span class="material-symbols-rounded" aria-hidden="true">folder_open</span>
-        Ouvrir un projet
-      </button>
+            <div
+              ngMenuItem
+              [value]="item.code"
+              class="m-ghost-button m-left"
+              (click)="startAction(item.code)"
+              (keydown.enter)="startAction(item.code)"
+            >
+              <span class="material-symbols-rounded" translate="no" aria-hidden="true">{{item.icon}}</span>
+              <span>{{item.label}}</span>
+            </div>
+          }
+        }
+      </div>
+    </ng-template>
+  </div>
+</ng-template>
 
-      <hr class="m-separator" />
+@if (isFilePopupOpened()) {
+  <app-file-import-popup (confirm)="closeFilePopup($event)" />
+}
 
-      <button
-        #menuItem
-        type="button"
-        class="m-ghost-button m-left"
-        role="menuitem"
-        (click)="saveAs()"
-        [disabled]="busy()"
-      >
-        <span class="material-symbols-rounded" aria-hidden="true">download</span>
-        Télécharger
-      </button>
-    </div>
-
-    @if (isFilePopupOpened()) {
-      <app-file-import-popup (confirm)="closeFilePopup($event)" />
-    }
-
-    @if (confirmNew()) {
-      <app-confirm-popup (confirm)="confirmNewModel($event)">
-        <p>Le modèle « {{ title() }} » enregistré dans ce navigateur sera remplacé.</p>
-      </app-confirm-popup>
-    }
-  }
-  <output class="visually-hidden">{{ busy() ? 'Ouverture du modèle.' : '' }}</output>
-</div>
+@if (confirmNew()) {
+  <app-confirm-popup (confirm)="confirmNewModel($event)">
+    <p>Le modèle « {{ title() }} » enregistré dans ce navigateur sera remplacé.</p>
+  </app-confirm-popup>
+}
