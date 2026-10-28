@@ -1,6 +1,8 @@
 ::ng-deep f-flow {
   .f-connection {
     .f-connection-content {
+      background: var(--m-color-background);
+      color: var(--m-color-text);
       .edit-area {
         display: none;
       }
@@ -10,6 +12,8 @@
   &:not(.f-dragging) {
     .f-connection.f-selected {
       .f-connection-content {
+        padding: .2rem;
+        border: 1.5px solid var(--m-color-main-fade);
         .edit-area {
           display: flex;
         }

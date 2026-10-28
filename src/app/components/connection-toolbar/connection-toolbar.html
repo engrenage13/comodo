@@ -1,16 +1,22 @@
-<div class="row gap-xs edit-area">
+<div class="m-row m-gap-xs edit-area">
   <ng-container [ngTemplateOutlet]="quantitySelect" [ngTemplateOutletContext]="{rightSide: false}"></ng-container>
   <div>-</div>
   <ng-container [ngTemplateOutlet]="quantitySelect" [ngTemplateOutletContext]="{rightSide: true}"></ng-container>
-  <button title="Supprimer ce lien" (click)="remove($event)"><span class="material-symbols-rounded">ink_eraser</span></button>
+  <button
+    title="Supprimer ce lien"
+    (click)="remove($event)"
+    class="m-button m-ico-button m-critical"
+  >
+    <span class="material-symbols-rounded">ink_eraser</span>
+  </button>
 </div>
-<div class="row gap-xs read-area">
+<div class="m-row m-gap-xs read-area">
   {{leftQuantity()}} - {{rightQuantity()}}
 </div>
 
 <ng-template #quantitySelect let-rightSide="rightSide">
   <label>
-    <select [formField]="rightSide ? quantityForm.right : quantityForm.left">
+    <select [formField]="rightSide ? quantityForm.right : quantityForm.left" class="m-select">
       <option [value]="ERelationQuantity.ZeroToOne">0..1</option>
       <option [value]="ERelationQuantity.OneToOne">1..1</option>
       <option [value]="ERelationQuantity.ZeroToMany">0..n</option>
