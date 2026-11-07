@@ -1,5 +1,5 @@
 @use '@foblex/flow/styles/default';
-@use 'mars.scss' as mars;
+@use 'mars' as mars;
 
 .material-symbols-rounded {
   font-variation-settings:
@@ -11,41 +11,4 @@
 
 .error-list {
   padding: 0 0 0 1.5rem;
-}
-
-.input {
-  padding: .5rem;
-  border-radius: .5rem;
-  border: none;
-  background: var(--color-background-fade);
-  color: inherit;
-
-  &:disabled {
-    cursor: not-allowed;
-    background: var(--color-grey);
-  }
-}
-
-.chips {
-  @extend .m-ghost-button;
-  padding-right: 1rem;
-
-  &::before {
-    content: "";
-    transition: all .2s ease-in-out;
-    height: 1.5rem;
-    width: 0;
-  }
-
-  &.selected {
-    @extend .m-button;
-
-    &::before {
-      @extend .m-row, .m-center;
-      content: "check";
-      font-family: "Material Symbols Rounded", serif;
-      font-size: 1.5rem;
-      width: 1.5rem;
-    }
-  }
 }

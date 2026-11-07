@@ -515,7 +515,7 @@ label {
   height: 2.5rem;
   border: 1px solid var(--m-color-grey-fade);
   cursor: pointer;
-  transition: all .1s ease-in-out;
+  transition: background-color .1s ease-in-out;
   background-color: var(--m-color-background-fade);
 
   &:hover, &:focus {
@@ -832,11 +832,11 @@ label {
 }
 .m-shadow {
   background: var(--m-color-overlay);
-  transition: .3s;
+  transition: opacity .2s;
 
   // Animation
   &-animation-transparent {
-    animation: transparent .2s ease-in-out;
+    animation: transparent .15s ease-in-out;
   }
 }
 .m-popup {

@@ -52,5 +52,5 @@
 <app-toolbar />
 
 @if(editedTable()) {
-  <app-table-settings [tableDatas]="editedTable()!" (closePanel)="editedTable.set(undefined)" />
+  <app-table-settings [tableDatas]="editedTable()!" (closeWindow)="editedTable.set(undefined)" />
 }

@@ -2,13 +2,14 @@ import { Component, computed, inject, input, linkedSignal, output, signal } from
 import { SidePanel } from "../side-panel/side-panel";
 import { IColumn, ITable } from '../../types/interfaces';
 import { Table } from '../../services/table';
-import { form, required, FormField, disabled } from '@angular/forms/signals';
+import { form, required, FormField } from '@angular/forms/signals';
 import { ColumnForm } from "../column-form/column-form";
 import { CdkDragDrop, moveItemInArray, CdkDropList } from '@angular/cdk/drag-drop';
+import {Popup} from '../primitives/popup/popup';
 
 @Component({
   selector: 'app-table-settings',
-  imports: [SidePanel, FormField, ColumnForm, CdkDropList],
+  imports: [SidePanel, FormField, ColumnForm, CdkDropList, Popup],
   templateUrl: './table-settings.html',
   styleUrl: './table-settings.scss',
 })
@@ -19,7 +20,10 @@ export class TableSettings {
   tableDatas = input.required<ITable>();
 
   // Outputs
-  closePanel = output<void>();
+  closeWindow = output<void>();
+
+  // Internal work
+  closed = signal<boolean>(false);
 
   // Columns
   columns = linkedSignal<{column: IColumn, invalid: boolean, checked?: boolean}[]>(() =>
@@ -34,7 +38,6 @@ export class TableSettings {
   tableModel = linkedSignal<ITable>(() => this.tableDatas());
   tableForm = form(this.tableModel, (schema) => {
     required(schema.title, {message: "La table doit avoir un nom."});
-    disabled(schema.title, {when: () => this.deleteColumnMode()});
   });
   isInvalid = computed(() =>
     (this.tableForm().touched() && this.tableForm().invalid()) || this.hasInvalidColumn()
@@ -46,9 +49,14 @@ export class TableSettings {
     });
   }
 
+  close(): void {
+    this.closed.set(true);
+    this.closeWindow.emit();
+  }
+
   deleteTable(): void {
     this.tableService.deleteTable(this.tableDatas().id);
-    this.closePanel.emit();
+    this.closeWindow.emit();
   }
 
   drop(event: CdkDragDrop<IColumn[]>) {
@@ -61,7 +69,7 @@ export class TableSettings {
     // Table
     const table: ITable = {...this.tableModel(), columns};
     this.tableService.updateTable(this.tableDatas().id, table);
-    this.closePanel.emit();
+    this.closeWindow.emit();
   }
 
   switchColumnMode(): void {

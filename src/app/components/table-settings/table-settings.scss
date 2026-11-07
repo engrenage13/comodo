@@ -8,3 +8,9 @@
   background: var(--color-background);
   padding: .3rem 0;
 }
+
+.form-error {
+  color: var(--m-color-critical);
+  font-weight: bold;
+  font-style: italic;
+}
